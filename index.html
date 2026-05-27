@@ -1166,7 +1166,7 @@
             <div class="live-divider"></div>
             <div class="live-item">
                 <span class="live-icon">📖</span>
-                <span class="live-poem" id="poemText">唐诗加载中...</span>
+                <span class="live-poem" id="poemText" style="display:inline-block;overflow:hidden;max-width:320px;white-space:nowrap;position:relative;height:1.5em;vertical-align:middle"><span id="poemInner" style="display:inline-block;transition:transform .6s,opacity .6s;opacity:1">唐诗加载中...</span></span>
             </div>
             <div class="live-divider"></div>
             <div class="live-item">
@@ -2505,58 +2505,52 @@ if __name__ == "__main__":
     ============================================================ */
     // ---------- 唐诗轮换（内置50首，按日期取余轮换）----------
     const POEMS = [
-        {"text": "天生我材必有用，千金散尽还复来", "author": "李白"},
-        {"text": "举头望明月，低头思故乡", "author": "李白"},
-        {"text": "身无彩凤双飞翼，心有灵犀一点通", "author": "李商隐"},
-        {"text": "山重水复疑无路，柳暗花明又一村", "author": "陆游"},
-        {"text": "白日依山尽，黄河入海流", "author": "王之浣"},
-        {"text": "磁针不指南，春风不度玉门关", "author": "王昌龄"},
-        {"text": "欲穷千里目，更上一层楼", "author": "王之涣"},
-        {"text": "大漠孤烟直，长河落日圆", "author": "王维"},
-        {"text": "春风不度玉门关，羌笛何须怨杨柳", "author": "王之涣"},
-        {"text": "春眠不觉晓，处处闻啼鸟", "author": "孟浩然"},
-        {"text": "不知细叶谁裁出，二月春风似剪刀", "author": "贺知章"},
-        {"text": "山回路转不见君，雪上空留马行处", "author": "岑参"},
-        {"text": "明月松间照，清泉石上流", "author": "王维"},
-        {"text": "日暮乡关何处是，烟波江上使人愁", "author": "崔颢"},
-        {"text": "两岞青山相对出，孤帆一片日边来", "author": "李白"},
-        {"text": "明月几时有，把酒问青天", "author": "苏轼"},
-        {"text": "远上寒山石径斜，白云生处有人家", "author": "杜牧"},
-        {"text": "朝辞白帝彩云间，千里江陵一日还", "author": "李白"},
-        {"text": "春江潮水连海平，海上明月共潮生", "author": "张若虚"},
-        {"text": "劝君更尽一杯酒，西出阳关无故人", "author": "王维"},
-        {"text": "海内存知己，天涯若比邻", "author": "王勃"},
-        {"text": "床前明月光，疑是地上霜", "author": "李白"},
-        {"text": "天下三分明月夜，二分无赖是扬州", "author": "徐凝"},
-        {"text": "海内存知己，天涯若比邻", "author": "王勃"},
-        {"text": "旧时王谢堂前燕，飞入寻常百姓家", "author": "刘禹锡"},
-        {"text": "只缘身在最高层，不是一番寒彻骨，怎得梅花话鼻香", "author": "王冠华"},
-        {"text": "坐看黑云衣翠绳，遥望福建海环善", "author": "王维"},
-        {"text": "兴尽深林人不见，一片空心分林若家", "author": "王维"},
-        {"text": "春潮不知四山轿，濒我春江与天平", "author": "李白"},
-        {"text": "寻寻觅觅，冷冷清清，凄凄惨惨戚戚", "author": "李清照"},
-        {"text": "停车坐爱枫林晚，霜叶红于二月花", "author": "杜牧"},
-        {"text": "春色满园关不住，一枝红杏出墙来", "author": "叶绍翁"},
-        {"text": "桃花潭水深千尺，不及汪伦送我情", "author": "李白"},
-        {"text": "毅然忧时流，秋天气爱内", "author": "陶渊明"},
-        {"text": "五岳寻仙不辞远，一生她纵峰顶上走", "author": "李白"},
-        {"text": "十步桂庁一池水，先气香远提高孝", "author": "柳宗元"},
-        {"text": "譩山葩野站立高，天小乎也，故为通世之幻", "author": "黄庭坚"},
-        {"text": "烽火连三月，家书抵万金", "author": "杜甫"},
-        {"text": "沉舟侧畔千帆过，病树前头万木春", "author": "刘禹锡"},
-        {"text": "一饥一饱世情尽，永抱萍水远汗征", "author": "姜著"},
-        {"text": "感时花溅泪，恨别鸟惊心", "author": "杜甫"},
-        {"text": "山不在高，有仙则名。水不在深，有龙则灵", "author": "刘禹鸡"},
-        {"text": "人生得意須尽欢，莫使金樽空对月", "author": "李白"},
-        {"text": "伟大的时代不伟大，伟大的人不伟大", "author": "李白"},
-        {"text": "地白风雪安发首，天青日月永年少", "author": "不详"}
+        "天生我材必有用，千金散尽还复来",
+        "长风破浪会有时，直挂云帆济沧海",
+        "举头望明月，低头思故乡",
+        "朝辞白帝彩云间，千里江陵一日还",
+        "飞流直下三千尺，疑是银河落九天",
+        "两岸青山相对出，孤帆一片日边来",
+        "桃花潭水深千尺，不及汪伦送我情",
+        "人生得意须尽欢，莫使金樽空对月",
+        "抽刀断水水更流，举杯消愁愁更愁",
+        "仰天大笑出门去，我辈岂是蓬蒿人",
+        "大鹏一日同风起，扶摇直上九万里",
+        "安能摧眉折腰事权贵，使我不得开心颜",
+        "黄河之水天上来，奔流到海不复回",
+        "云想衣裳花想容，春风拂槛露华浓",
+        "故人西辞黄鹤楼，烟花三月下扬州",
+        "孤帆远影碧空尽，唯见长江天际流",
+        "床前明月光，疑是地上霜",
+        "花间一壶酒，独酌无相亲",
+        "相看两不厌，只有敬亭山",
+        "今人不见古时月，今月曾经照古人"
     ];
+    let _poemIdx = 0;
     function loadPoem() {
-        const dayIndex = Math.floor(Date.now() / 86400000) % POEMS.length;
-        const p = POEMS[dayIndex];
-        const el = document.getElementById('poemText');
-        if (el) el.textContent = '「' + p.text + '」 — ' + p.author;
+        const inner = document.getElementById('poemInner');
+        if (!inner) return;
+        inner.textContent = '「' + POEMS[_poemIdx] + '」— 李白';
     }
+    function slidePoem() {
+        const inner = document.getElementById('poemInner');
+        if (!inner) return;
+        inner.style.transform = 'translateY(-100%)';
+        inner.style.opacity = '0';
+        setTimeout(() => {
+            _poemIdx = (_poemIdx + 1) % POEMS.length;
+            inner.textContent = '「' + POEMS[_poemIdx] + '」— 李白';
+            inner.style.transition = 'none';
+            inner.style.transform = 'translateY(100%)';
+            inner.style.opacity = '0';
+            requestAnimationFrame(() => {
+                inner.style.transition = 'transform .6s, opacity .6s';
+                inner.style.transform = 'translateY(0)';
+                inner.style.opacity = '1';
+            });
+        }, 600);
+    }
+    setInterval(slidePoem, 5000);
 
     // ---------- 天气 API (wttr.in 无需 Key) ----------
     function loadWeather() {
