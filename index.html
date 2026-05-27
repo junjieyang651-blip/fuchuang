@@ -12,6 +12,9 @@
     <meta property="og:type" content="website">
     <meta name="keywords" content="王者荣耀,西安,大唐不夜城,文旅,李白,数字文旅,峡谷,盛唐">
     <meta name="author" content="诗韵长安团队">
+    <!-- TensorFlow.js + COCO-SSD 实时目标检测 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
     <style>
         :root {
             --gongqiang-red: #8B2323;
@@ -3070,42 +3073,91 @@ if __name__ == "__main__":
         draw();
     })();
 
-    // ========== AI 目标检测可视化（模拟 YOLO 标注） ==========
-    const _detectData = {
-        0: [{label:'李白(人物)',x:25,y:15,w:50,h:75,conf:0.96},{label:'长剑(武器)',x:55,y:40,w:18,h:35,conf:0.91},{label:'灯笼(场景)',x:5,y:10,w:15,h:20,conf:0.87}],
-        1: [{label:'李白(人物)',x:20,y:10,w:55,h:80,conf:0.97},{label:'剑光(特效)',x:40,y:20,w:35,h:50,conf:0.88},{label:'灯火(场景)',x:0,y:0,w:100,h:30,conf:0.82}],
-        2: [{label:'李白(人物)',x:30,y:20,w:40,h:70,conf:0.95},{label:'酒杯(道具)',x:45,y:30,w:12,h:15,conf:0.89},{label:'明月(场景)',x:60,y:5,w:20,h:20,conf:0.93}],
-        3: [{label:'上官婉儿(人物)',x:25,y:15,w:45,h:75,conf:0.96},{label:'毛笔(道具)',x:50,y:25,w:10,h:30,conf:0.90},{label:'大雁塔(建筑)',x:60,y:5,w:35,h:80,conf:0.94}],
-        4: [{label:'上官婉儿(人物)',x:20,y:20,w:45,h:70,conf:0.95},{label:'碑文(文物)',x:5,y:30,w:20,h:50,conf:0.86},{label:'塔身(建筑)',x:65,y:0,w:30,h:90,conf:0.92}],
-        5: [{label:'上官婉儿(人物)',x:30,y:15,w:40,h:70,conf:0.94},{label:'诗笺(道具)',x:15,y:40,w:20,h:15,conf:0.85},{label:'城郭(场景)',x:0,y:60,w:100,h:40,conf:0.88}],
-        6: [{label:'杨玉环(人物)',x:25,y:15,w:50,h:75,conf:0.97},{label:'琵琶(乐器)',x:40,y:35,w:20,h:30,conf:0.92},{label:'华清宫(建筑)',x:0,y:0,w:100,h:40,conf:0.90}],
-        7: [{label:'杨玉环(人物)',x:30,y:20,w:40,h:70,conf:0.96},{label:'海棠汤(场景)',x:0,y:50,w:100,h:50,conf:0.91},{label:'水雾(特效)',x:10,y:60,w:80,h:30,conf:0.84}],
-        8: [{label:'杨玉环(人物)',x:25,y:15,w:45,h:70,conf:0.95},{label:'古琴(乐器)',x:35,y:55,w:25,h:15,conf:0.89},{label:'长生殿(建筑)',x:50,y:0,w:50,h:50,conf:0.93}]
+    // ========== AI 目标检测（TensorFlow.js + COCO-SSD 真实推理） ==========
+    const _classNameCN = {
+        'person':'人物','sword':'长剑','knife':'利刃','cup':'酒杯','bowl':'碗','vase':'花瓶',
+        'book':'书卷','clock':'时钟','umbrella':'伞','handbag':'手袋','tie':'绶带',
+        'bottle':'酒壶','wine glass':'酒盏','cell phone':'卷轴','laptop':'琴案',
+        'chair':'座椅','dining table':'案几','potted plant':'盆景','bird':'飞鸟',
+        'cat':'灵猫','dog':'灵犬','horse':'骏马','backpack':'行囊','kite':'风筝'
     };
-    function toggleDetect(idx, btn) {
+    let _cocoModel = null;
+    let _modelLoading = false;
+    async function loadCocoModel() {
+        if (_cocoModel) return _cocoModel;
+        if (_modelLoading) {
+            while (!_cocoModel) await new Promise(r => setTimeout(r, 200));
+            return _cocoModel;
+        }
+        _modelLoading = true;
+        _cocoModel = await cocoSsd.load({ base: 'mobilenet_v2' });
+        _modelLoading = false;
+        return _cocoModel;
+    }
+    async function toggleDetect(idx, btn) {
         const card = btn.closest('.work-card');
         let overlay = card.querySelector('.detect-overlay');
         if (overlay) { overlay.remove(); btn.textContent = 'AI 检测'; return; }
-        overlay = document.createElement('div');
-        overlay.className = 'detect-overlay';
-        const boxes = _detectData[idx] || [];
-        boxes.forEach(b => {
-            const box = document.createElement('div');
-            box.className = 'detect-box';
-            box.style.cssText = 'left:'+b.x+'%;top:'+b.y+'%;width:'+b.w+'%;height:'+b.h+'%';
-            const lbl = document.createElement('span');
-            lbl.className = 'detect-label';
-            lbl.textContent = b.label + ' ' + (b.conf*100).toFixed(0) + '%';
-            box.appendChild(lbl);
-            overlay.appendChild(box);
-        });
-        card.appendChild(overlay);
-        btn.textContent = '关闭检测';
+        // 显示加载状态
+        btn.textContent = '模型加载中...';
+        btn.disabled = true;
+        try {
+            const model = await loadCocoModel();
+            btn.textContent = '推理中...';
+            // 获取图片元素
+            const img = card.querySelector('img');
+            // 运行真实推理
+            const predictions = await model.detect(img, 10, 0.3);
+            // 创建检测遮罩
+            overlay = document.createElement('div');
+            overlay.className = 'detect-overlay';
+            const imgRect = img.getBoundingClientRect();
+            const cardRect = card.getBoundingClientRect();
+            const offsetX = img.offsetLeft;
+            const offsetY = img.offsetTop;
+            const imgW = img.clientWidth;
+            const imgH = img.clientHeight;
+            if (predictions.length === 0) {
+                const tip = document.createElement('div');
+                tip.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.8);color:#4af;padding:8px 16px;border-radius:6px;font-size:12px;white-space:nowrap;';
+                tip.textContent = '未检测到 COCO 标准类目标（插画风格图像）';
+                overlay.appendChild(tip);
+            }
+            predictions.forEach(pred => {
+                const [bx, by, bw, bh] = pred.bbox;
+                const box = document.createElement('div');
+                box.className = 'detect-box';
+                // 将像素坐标转为百分比
+                const pctX = ((bx / img.naturalWidth) * 100).toFixed(1);
+                const pctY = ((by / img.naturalHeight) * 100).toFixed(1);
+                const pctW = ((bw / img.naturalWidth) * 100).toFixed(1);
+                const pctH = ((bh / img.naturalHeight) * 100).toFixed(1);
+                box.style.cssText = 'left:'+pctX+'%;top:'+pctY+'%;width:'+pctW+'%;height:'+pctH+'%';
+                const lbl = document.createElement('span');
+                lbl.className = 'detect-label';
+                const cnName = _classNameCN[pred.class] || pred.class;
+                lbl.textContent = cnName + ' ' + (pred.score * 100).toFixed(1) + '%';
+                box.appendChild(lbl);
+                overlay.appendChild(box);
+            });
+            // 添加推理信息
+            const info = document.createElement('div');
+            info.style.cssText = 'position:absolute;bottom:4px;left:4px;background:rgba(0,0,0,0.8);color:#4af;padding:3px 8px;border-radius:4px;font-size:10px;';
+            info.textContent = 'TensorFlow.js COCO-SSD | 检出 ' + predictions.length + ' 个目标';
+            overlay.appendChild(info);
+            card.appendChild(overlay);
+            btn.textContent = '关闭检测';
+        } catch (e) {
+            console.error('Detection error:', e);
+            btn.textContent = '检测失败';
+            setTimeout(() => { btn.textContent = 'AI 检测'; }, 2000);
+        }
+        btn.disabled = false;
     }
     // 自动给每个 work-card 加检测按钮
     document.querySelectorAll('.work-card').forEach(card => {
         const idx = card.getAttribute('data-index');
-        if (idx !== null && _detectData[idx]) {
+        if (idx !== null) {
             const btn = document.createElement('button');
             btn.className = 'detect-btn';
             btn.textContent = 'AI 检测';
