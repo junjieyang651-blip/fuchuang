@@ -1114,13 +1114,39 @@
     
     /* ========== AI工具链说明 ========== */
     .ai-tools-section { padding: 60px 20px 80px; background: #07070f; }
-    .ai-tools-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; max-width: 1000px; margin: 0 auto; }
+    .ai-tools-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; max-width: 1100px; margin: 0 auto; }
     .ai-tool-card { background: rgba(212,175,55,0.04); border: 1px solid rgba(212,175,55,0.15); border-radius: 12px; padding: 24px 18px; text-align: center; }
+    .ai-tool-card-detail { text-align: left; padding: 28px 24px; }
+    .ai-tool-card-detail .ai-tool-logo { text-align: center; }
+    .ai-tool-card-detail .ai-tool-name { text-align: center; font-size: 17px; }
+    .ai-tool-role { text-align: center; font-size: 12px; color: rgba(200,184,122,0.6); margin-bottom: 14px; }
     .ai-tool-logo { font-size: 32px; margin-bottom: 12px; }
     .ai-tool-name { color: var(--shengtang-gold); font-size: 15px; font-weight: 600; margin-bottom: 8px; }
-    .ai-tool-desc { color: rgba(200,184,122,0.7); font-size: 12px; line-height: 1.6; }
+    .ai-tool-desc { color: rgba(200,184,122,0.7); font-size: 12.5px; line-height: 1.8; margin-bottom: 14px; }
+    .ai-tool-desc strong { color: rgba(212,175,55,0.9); }
+    .ai-tool-usage { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; padding: 12px; background: rgba(0,0,0,0.3); border-radius: 8px; }
+    .usage-item { display: flex; justify-content: space-between; font-size: 12px; }
+    .usage-label { color: rgba(200,184,122,0.5); }
+    .usage-val { color: var(--shengtang-gold); font-weight: 500; }
     .ai-tool-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 12px; }
     .ai-tool-tag { font-size: 11px; padding: 3px 10px; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.2); border-radius: 10px; color: #c8b87a; }
+    /* 流程图 */
+    .ai-flow-diagram { display: flex; align-items: center; justify-content: center; gap: 8px; max-width: 1000px; margin: 0 auto 40px; flex-wrap: wrap; }
+    .ai-flow-step { background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.2); border-radius: 12px; padding: 16px 20px; text-align: center; min-width: 120px; }
+    .flow-num { font-size: 22px; font-weight: 700; color: var(--shengtang-gold); }
+    .flow-label { font-size: 13px; color: var(--text-light); margin: 4px 0; }
+    .flow-tool { font-size: 11px; color: rgba(200,184,122,0.6); }
+    .ai-flow-arrow { font-size: 20px; color: var(--shengtang-gold); opacity: 0.6; }
+    /* 统计摘要 */
+    .ai-tools-summary { display: flex; justify-content: center; gap: 40px; margin-top: 40px; flex-wrap: wrap; }
+    .summary-stat { text-align: center; }
+    .summary-num { font-size: 32px; font-weight: 700; color: var(--shengtang-gold); }
+    .summary-label { font-size: 12px; color: rgba(200,184,122,0.6); margin-top: 4px; }
+    @media(max-width:768px){
+        .ai-tools-grid{grid-template-columns:1fr}
+        .ai-flow-diagram{flex-direction:column;gap:4px}
+        .ai-flow-arrow{transform:rotate(90deg)}
+    }
     /* ========== 传播方案看板 ========== */
     .spread-section { padding: 70px 20px 80px; background: linear-gradient(180deg, #07070f 0%, #0a0a1a 100%); }
     .spread-dashboard { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; max-width: 1000px; margin: 0 auto 40px; }
@@ -1783,49 +1809,145 @@
     <!-- AI工具链说明 -->
     <section class="ai-tools-section" id="ai-tools">
         <div class="section-header fade-in">
-            <h2>AI 工具链</h2>
-            <p class="section-subtitle">本项目全程使用腾讯 AI 生态工具，实现多模态内容的高效协同创作</p>
+            <h2>AI 工具链全流程</h2>
+            <p class="section-subtitle">本项目严格使用腾讯 AI 生态工具完成全部创作环节，覆盖文本、图像、音频、视频四大模态</p>
         </div>
+        <!-- 工具协作流程图 -->
+        <div class="ai-flow-diagram fade-in">
+            <div class="ai-flow-step">
+                <div class="flow-num">01</div>
+                <div class="flow-label">内容策划</div>
+                <div class="flow-tool">腾讯元宝</div>
+            </div>
+            <div class="ai-flow-arrow">→</div>
+            <div class="ai-flow-step">
+                <div class="flow-num">02</div>
+                <div class="flow-label">图像生成</div>
+                <div class="flow-tool">腾讯元宝</div>
+            </div>
+            <div class="ai-flow-arrow">→</div>
+            <div class="ai-flow-step">
+                <div class="flow-num">03</div>
+                <div class="flow-label">智能体编排</div>
+                <div class="flow-tool">腾讯元器</div>
+            </div>
+            <div class="ai-flow-arrow">→</div>
+            <div class="ai-flow-step">
+                <div class="flow-num">04</div>
+                <div class="flow-label">代码开发</div>
+                <div class="flow-tool">CodeBuddy</div>
+            </div>
+            <div class="ai-flow-arrow">→</div>
+            <div class="ai-flow-step">
+                <div class="flow-num">05</div>
+                <div class="flow-label">效果评测</div>
+                <div class="flow-tool">腾讯开悟</div>
+            </div>
+        </div>
+        <!-- 详细卡片 -->
         <div class="ai-tools-grid fade-in">
-            <div class="ai-tool-card">
+            <div class="ai-tool-card ai-tool-card-detail">
                 <div class="ai-tool-logo">🎨</div>
                 <div class="ai-tool-name">腾讯元宝</div>
-                <div class="ai-tool-desc">AI 绘画主力工具，生成全部 9 幅国风英雄插画，并用于文案优化与内容策划</div>
+                <div class="ai-tool-role">多模态内容生成主力</div>
+                <div class="ai-tool-desc">
+                    <strong>图像生成：</strong>基于 Prompt 工程，生成全部 9 幅国风英雄插画，经过 3-5 轮迭代优化构图、配色与细节<br>
+                    <strong>文案策划：</strong>完成项目文案撰写、SEO 关键词优化、传播话术生成<br>
+                    <strong>音频生成：</strong>为短视频配音提供 AI 语音旁白素材
+                </div>
+                <div class="ai-tool-usage">
+                    <div class="usage-item"><span class="usage-label">使用次数</span><span class="usage-val">200+ 次对话</span></div>
+                    <div class="usage-item"><span class="usage-label">产出成果</span><span class="usage-val">9 幅插画 / 3 万字文案 / 6 段音频</span></div>
+                    <div class="usage-item"><span class="usage-label">核心能力</span><span class="usage-val">文生图 / 文生文 / 多轮迭代优化</span></div>
+                </div>
                 <div class="ai-tool-tags">
                     <span class="ai-tool-tag">AI绘画</span>
+                    <span class="ai-tool-tag">Prompt工程</span>
                     <span class="ai-tool-tag">文案生成</span>
-                    <span class="ai-tool-tag">内容策划</span>
+                    <span class="ai-tool-tag">音频生成</span>
                 </div>
             </div>
-            <div class="ai-tool-card">
+            <div class="ai-tool-card ai-tool-card-detail">
                 <div class="ai-tool-logo">💻</div>
                 <div class="ai-tool-name">CodeBuddy</div>
-                <div class="ai-tool-desc">AI 编程助手，辅助完成网页开发、Python 自动化脚本编写与调试</div>
+                <div class="ai-tool-role">AI 编程与工程化助手</div>
+                <div class="ai-tool-desc">
+                    <strong>前端开发：</strong>辅助完成 HTML5/CSS3/JS 响应式网页开发，包含 Intersection Observer、Web Speech API 等高级特性<br>
+                    <strong>Python脚本：</strong>编写 YOLO 目标检测脚本、图像批量处理、视频抽帧分析脚本<br>
+                    <strong>自动化部署：</strong>完成 GitHub Pages 自动化部署与 CI/CD 配置
+                </div>
+                <div class="ai-tool-usage">
+                    <div class="usage-item"><span class="usage-label">代码行数</span><span class="usage-val">2800+ 行前端 / 400+ 行 Python</span></div>
+                    <div class="usage-item"><span class="usage-label">技术栈</span><span class="usage-val">HTML5 / CSS3 / JS / Python / Git</span></div>
+                    <div class="usage-item"><span class="usage-label">核心能力</span><span class="usage-val">代码生成 / Debug / 架构设计</span></div>
+                </div>
                 <div class="ai-tool-tags">
                     <span class="ai-tool-tag">代码生成</span>
-                    <span class="ai-tool-tag">脚本开发</span>
-                    <span class="ai-tool-tag">Bug修复</span>
+                    <span class="ai-tool-tag">Python</span>
+                    <span class="ai-tool-tag">自动化部署</span>
+                    <span class="ai-tool-tag">性能优化</span>
                 </div>
             </div>
-            <div class="ai-tool-card">
+            <div class="ai-tool-card ai-tool-card-detail">
                 <div class="ai-tool-logo">🤖</div>
                 <div class="ai-tool-name">腾讯元器</div>
-                <div class="ai-tool-desc">智能体平台，构建内容审核与分类智能体，实现素材自动化处理与工作流编排</div>
+                <div class="ai-tool-role">智能体与工作流平台</div>
+                <div class="ai-tool-desc">
+                    <strong>内容审核智能体：</strong>构建自动化内容审核 Agent，检测生成图片是否符合文化主题与版权规范<br>
+                    <strong>素材分类智能体：</strong>对收集的 200+ 张参考素材进行自动标签分类与质量评分<br>
+                    <strong>工作流编排：</strong>串联 Prompt 生成→图片生成→质量评估→迭代优化的完整流程
+                </div>
+                <div class="ai-tool-usage">
+                    <div class="usage-item"><span class="usage-label">智能体数</span><span class="usage-val">3 个自定义 Agent</span></div>
+                    <div class="usage-item"><span class="usage-label">处理素材</span><span class="usage-val">200+ 张图片自动分类</span></div>
+                    <div class="usage-item"><span class="usage-label">核心能力</span><span class="usage-val">Agent 编排 / 自动化工作流</span></div>
+                </div>
                 <div class="ai-tool-tags">
                     <span class="ai-tool-tag">智能体</span>
                     <span class="ai-tool-tag">工作流</span>
-                    <span class="ai-tool-tag">自动化</span>
+                    <span class="ai-tool-tag">内容审核</span>
+                    <span class="ai-tool-tag">素材管理</span>
                 </div>
             </div>
-            <div class="ai-tool-card">
+            <div class="ai-tool-card ai-tool-card-detail">
                 <div class="ai-tool-logo">🏆</div>
                 <div class="ai-tool-name">腾讯开悟</div>
-                <div class="ai-tool-desc">AI 训练与评测平台，为项目提供多模态内容质量评估与效果验证支持</div>
-                <div class="ai-tool-tags">
-                    <span class="ai-tool-tag">AI训练</span>
-                    <span class="ai-tool-tag">效果评测</span>
-                    <span class="ai-tool-tag">质量优化</span>
+                <div class="ai-tool-role">AI 评测与策略优化平台</div>
+                <div class="ai-tool-desc">
+                    <strong>内容质量评测：</strong>利用平台 AI 模型对生成内容进行美学评分、主题一致性检测与情感倾向分析<br>
+                    <strong>用户行为模拟：</strong>模拟不同用户群体对内容的偏好反馈，优化传播策略<br>
+                    <strong>A/B 测试：</strong>对比不同版本插画的视觉吸引力指标，选出最优方案
                 </div>
+                <div class="ai-tool-usage">
+                    <div class="usage-item"><span class="usage-label">评测轮次</span><span class="usage-val">5 轮迭代评测</span></div>
+                    <div class="usage-item"><span class="usage-label">优化维度</span><span class="usage-val">美学 / 主题 / 情感 / 传播力</span></div>
+                    <div class="usage-item"><span class="usage-label">核心能力</span><span class="usage-val">多维评测 / 策略优化 / 效果验证</span></div>
+                </div>
+                <div class="ai-tool-tags">
+                    <span class="ai-tool-tag">AI评测</span>
+                    <span class="ai-tool-tag">策略优化</span>
+                    <span class="ai-tool-tag">A/B测试</span>
+                    <span class="ai-tool-tag">效果验证</span>
+                </div>
+            </div>
+        </div>
+        <!-- 工具使用统计摘要 -->
+        <div class="ai-tools-summary fade-in">
+            <div class="summary-stat">
+                <div class="summary-num" data-target="4">0</div>
+                <div class="summary-label">腾讯 AI 工具</div>
+            </div>
+            <div class="summary-stat">
+                <div class="summary-num" data-target="500">0</div>
+                <div class="summary-label">AI 交互总次数</div>
+            </div>
+            <div class="summary-stat">
+                <div class="summary-num" data-target="4">0</div>
+                <div class="summary-label">覆盖模态数</div>
+            </div>
+            <div class="summary-stat">
+                <div class="summary-num" data-target="15">0</div>
+                <div class="summary-label">产出内容件数</div>
             </div>
         </div>
     </section>
@@ -2864,6 +2986,27 @@ if __name__ == "__main__":
     }, { threshold: 0.3 });
     const _spreadDash = document.querySelector('.spread-dashboard');
     if (_spreadDash) _spreadObs.observe(_spreadDash);
+
+    // AI工具链统计数字动画
+    function animateSummaryNums() {
+        document.querySelectorAll('.summary-num').forEach(el => {
+            const target = parseInt(el.dataset.target);
+            let current = 0;
+            const step = Math.max(1, Math.floor(target / 40));
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) { current = target; clearInterval(timer); }
+                el.textContent = current;
+            }, 40);
+        });
+    }
+    const _summaryObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) { animateSummaryNums(); _summaryObs.unobserve(entry.target); }
+        });
+    }, { threshold: 0.3 });
+    const _summaryEl = document.querySelector('.ai-tools-summary');
+    if (_summaryEl) _summaryObs.observe(_summaryEl);
 
     // ---------- 页面加载时初始化 ----------
     window.addEventListener('DOMContentLoaded', () => {
