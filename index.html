@@ -1187,9 +1187,33 @@
     /* ========== 音频频谱 ========== */
     .audio-visualizer { display: flex; align-items: flex-end; gap: 2px; height: 24px; margin-top: 8px; justify-content: center; }
     .audio-bar { width: 3px; background: var(--shengtang-gold); border-radius: 2px; transition: height .1s; }
+    /* ========== Splash加载动画 ========== */
+    #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0e0b08; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 99999; transition: opacity .6s, visibility .6s; }
+    #splashScreen.hidden { opacity: 0; visibility: hidden; }
+    .splash-title { font-family: var(--font-title); font-size: 28px; color: var(--shengtang-gold); letter-spacing: 4px; margin-bottom: 16px; animation: splashPulse 1.5s infinite; }
+    .splash-sub { font-size: 13px; color: rgba(200,184,122,0.6); margin-bottom: 30px; }
+    .splash-loader { width: 200px; height: 3px; background: rgba(212,175,55,0.15); border-radius: 2px; overflow: hidden; }
+    .splash-bar { width: 0%; height: 100%; background: linear-gradient(90deg, var(--shengtang-gold), #e8c850); border-radius: 2px; transition: width .3s; }
+    @keyframes splashPulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+    /* ========== 滚动进度条 ========== */
+    #scrollProgress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--shengtang-gold), #e8c850); z-index: 10000; width: 0%; transition: width .1s; }
+    /* ========== 返回顶部 ========== */
+    #backToTop { position: fixed; bottom: 30px; right: 30px; width: 44px; height: 44px; border-radius: 50%; background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.3); color: var(--shengtang-gold); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all .3s; z-index: 9999; backdrop-filter: blur(6px); }
+    #backToTop.visible { opacity: 1; visibility: visible; }
+    #backToTop:hover { background: rgba(212,175,55,0.3); transform: translateY(-3px); }
     </style>
 </head>
 <body>
+    <!-- Splash加载屏 -->
+    <div id="splashScreen">
+        <div class="splash-title">诗韵长安</div>
+        <div class="splash-sub">AI 多模态引擎加载中...</div>
+        <div class="splash-loader"><div class="splash-bar" id="splashBar"></div></div>
+    </div>
+    <!-- 滚动进度条 -->
+    <div id="scrollProgress"></div>
+    <!-- 返回顶部 -->
+    <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
     <!-- 导航栏 -->
     <header class="nav-header" id="navbar">
         <a href="#hero" class="nav-logo">诗韵长安・峡谷寻踪</a>
@@ -1268,21 +1292,21 @@
             <p class="series-description">李白，盛唐浪漫主义诗歌的已峰代表，少年意气入长安、诗酒风流动京华，其狂放洒脱的文人气质与长安开放包容的盛世精神高度契合。大唐不夜城作为西安盛唐文化核心地标，以贞观之治、开元盛世为文脉内核，集灯火演艺、诗词意境、市井繁华于一体，完美承载了诗仙笔下的长安气象。本系列以李白行迹为叙事线索，将诗仙豪情与盛唐灯火相融，用年轻化的国风视觉语言还原长安盛景，让王者荣耀英雄 IP 与西安城市文脉实现深度联结与精神共鸣。</p>
             <div class="works-grid">
                 <div class="work-card" data-index="0">
-                    <img src="./李白-大唐不夜城-1.jpg" alt="《将进酒・入长安》" loading="lazy">
+                    <img src="./李白-大唐不夜城-1.jpg" alt="《将进酒・入长安》" loading="lazy" crossorigin="anonymous">
                     <div class="work-info">
                         <h4 class="work-name">《将进酒・入长安》</h4>
                         <p class="work-meaning">李白携酒仗剑踏入长安天街，衣袅随灯火翻飞，剑气与夜色相融，再现少年诗仙初入长安的豪情。<br><span style="font-size:0.85em;opacity:0.7">设计依据：大唐不夜城贞观广场、盛唐天街实景氛围</span></p>
                     </div>
                 </div>
                 <div class="work-card" data-index="1">
-                    <img src="./李白-大唐不夜城-2.jpg" alt="《醉剑舞・不夜天》" loading="lazy">
+                    <img src="./李白-大唐不夜城-2.jpg" alt="《醉剑舞・不夜天》" loading="lazy" crossorigin="anonymous">
                     <div class="work-info">
                         <h4 class="work-name">《醉剑舞・不夜天》</h4>
                         <p class="work-meaning">李白于灯火长街醉中舞剑，剑光与万家灯火交相辉映，呼现大唐不夜城最具代表性的盛世夜景。<br><span style="font-size:0.85em;opacity:0.7">设计依据：大唐不夜城夜间演艺、灯光秀体系、行进式沉浸体验</span></p>
                     </div>
                 </div>
                 <div class="work-card" data-index="2">
-                    <img src="./李白-大唐不夜城-3.jpg" alt="《邀明月・诗千行》" loading="lazy">
+                    <img src="./李白-大唐不夜城-3.jpg" alt="《邀明月・诗千行》" loading="lazy" crossorigin="anonymous">
                     <div class="work-info">
                         <h4 class="work-name">《邀明月・诗千行》</h4>
                         <p class="work-meaning">李白高台举杯邀月，诗思随月光洒落长街，再现唐诗意境与长安夜景相融的经典画面。<br><span style="font-size:0.85em;opacity:0.7">设计依据：曲江飞行劇院“空中读诗”、王维数字沉浸特展诗意表达手法</span></p>
@@ -1296,21 +1320,21 @@
             <p class="series-description">上官婉儿以女子之身执掌文诰、品评天下文士，是盛唐文坛与科举文化的标志性人物，以才情与胆识撑起"称量天下士"的传奇，成为古代女性文胆与文脉传承的重要象征。大雁塔作为唐代"雁塔题名"的文化圣地，是万千进士心中的精神图腾，承载着文人登科入仕、以文报国的理想与风骨，更是盛唐文教昌盛的核心地标。二者在文气、风骨、传承三大精神内核上高度契合、彼此呼应，共同勾勒出盛唐文人风骨与长安文脉的精神底色。</p>
             <div class="works-grid">
                 <div class="work-card" data-index="3">
-                    <img src="./上官婉儿-大雁塔-1.jpg" alt="《执神笔・谒雁塔》" loading="lazy">
+                    <img src="./上官婉儿-大雁塔-1.jpg" alt="《执神笔・谒雁塔》" loading="lazy" crossorigin="anonymous">
                     <div class="work-info">
                         <h4 class="work-name">《执神笔・谒雁塔》</h4>
                         <p class="work-meaning">上官婉儿执笔墨立于大雁塔下，字迹化蝶绕塔飞升，象征以笔墨续长安文脉。<br><span style="font-size:0.85em;opacity:0.7">设计依据：大雁塔进士题名碑、唐代文人礼仪规制</span></p>
                     </div>
                 </div>
                 <div class="work-card" data-index="4">
-                    <img src="./上官婉儿-大雁塔-2.jpg" alt="《题名处・续文脉》" loading="lazy">
+                    <img src="./上官婉儿-大雁塔-2.jpg" alt="《题名处・续文脉》" loading="lazy" crossorigin="anonymous">
                     <div class="work-info">
                         <h4 class="work-name">《题名处・续文脉》</h4>
                         <p class="work-meaning">婉儿于雁塔题名处挥毫，碑文字迹历历在目，再现唐代文人登塔题名、光耀长安的经典场景。<br><span style="font-size:0.85em;opacity:0.7">设计依据：大雁塔"雁塔题名"历史文化、数字沉浸展交互形式</span></p>
                     </div>
                 </div>
                 <div class="work-card" data-index="5">
-                    <img src="./上官婉儿-大雁塔-3.jpg" alt="《称量士・望长安》" loading="lazy">
+                    <img src="./上官婉儿-大雁塔-3.jpg" alt="《称量士・望长安》" loading="lazy" crossorigin="anonymous">
                     <div class="work-info">
                         <h4 class="work-name">《称量士・望长安》</h4>
                         <p class="work-meaning">婉儿登塔俯瞰长安城，诗笺随风散落，象征以才评天下、以笔定文风的"称量天下士"精神。<br><span style="font-size:0.85em;opacity:0.7">设计依据：唐代女官文化、大雁塔登高望远景观体系</span></p>
@@ -1324,21 +1348,21 @@
             <p class="series-description">杨玉环作为盛唐宫廷美学与乐舞文化的标志性人物，身姿雍容、才情卓绝，与霓裳羽衣、梨园雅乐等经典盛唐意象深度绑定，是长安盛世风华最具代表性的符号。华清宫作为皇家御苑，集骊山温泉、海棠汤御池、梨园乐舞、长生盟誓、《长恨歌》传奇于一体，承载着唐代宫廷的浪漫气韵与盛世审美，是盛唐宫廷文化最具代表性的实景载体。本系列以典雅华贵的唐代宫廷美学为创作基底，将英雄 IP 与地标文化深度融合，用细腻唯美的画面再现盛唐极致风华。</p>
             <div class="works-grid">
                 <div class="work-card" data-index="6">
-                    <img src="./杨玉环-华清宫-1.jpg" alt="《霓裳曲・入华清》" loading="lazy">
+                    <img src="./杨玉环-华清宫-1.jpg" alt="《霓裳曲・入华清》" loading="lazy" crossorigin="anonymous">
                     <div class="work-info">
                         <h4 class="work-name">《霓裳曲・入华清》</h4>
                         <p class="work-meaning">杨玉环于华清宫前抚弦弹奏，霓裳羽衣随风轻扬，弦音流转间尽显盛唐宫廷乐舞之美。<br><span style="font-size:0.85em;opacity:0.7">设计依据：华清宫梨园遗址、唐代宫廷乐舞文化</span></p>
                     </div>
                 </div>
                 <div class="work-card" data-index="7">
-                    <img src="./杨玉环-华清宫-2.jpg" alt="《海棠汤・沐凝脂》" loading="lazy">
+                    <img src="./杨玉环-华清宫-2.jpg" alt="《海棠汤・沐凝脂》" loading="lazy" crossorigin="anonymous">
                     <div class="work-info">
                         <h4 class="work-name">《海棠汤・沐凝脂》</h4>
                         <p class="work-meaning">杨玉环立于海棠汤遗址旁，水雾缭绕、衣袅翕翚，还原皇家温泉文化与盛唐女性美学。<br><span style="font-size:0.85em;opacity:0.7">设计依据：华清宫海棠汤、皇家御汤遗址景观</span></p>
                     </div>
                 </div>
                 <div class="work-card" data-index="8">
-                    <img src="./杨玉环-华清宫-3.jpg" alt="《长恨歌・月明中》" loading="lazy">
+                    <img src="./杨玉环-华清宫-3.jpg" alt="《长恨歌・月明中》" loading="lazy" crossorigin="anonymous">
                     <div class="work-info">
                         <h4 class="work-name">《长恨歌・月明中》</h4>
                         <p class="work-meaning">月夜之下，杨玉环于长生殿前抚琴寄情，月光与琴声相融，再现《长恨歌》中浪漫而绵长的盛唐诗意。<br><span style="font-size:0.85em;opacity:0.7">设计依据：华清宫《长恨歌》实景演艺、月夜景观氛围</span></p>
@@ -3202,6 +3226,41 @@ if __name__ == "__main__":
             bars.forEach(b => { b.style.height = (Math.random() * 20 + 2) + 'px'; });
         }, 100);
     };
+
+    // ---------- Splash 加载屏控制 ----------
+    (function initSplash() {
+        const splash = document.getElementById('splashScreen');
+        const bar = document.getElementById('splashBar');
+        if (!splash || !bar) return;
+        let progress = 0;
+        const timer = setInterval(() => {
+            progress += Math.random() * 15 + 5;
+            if (progress > 95) progress = 95;
+            bar.style.width = progress + '%';
+        }, 200);
+        window.addEventListener('load', () => {
+            clearInterval(timer);
+            bar.style.width = '100%';
+            setTimeout(() => { splash.classList.add('hidden'); }, 400);
+            setTimeout(() => { splash.remove(); }, 1200);
+        });
+    })();
+
+    // ---------- 滚动进度条 & 返回顶部 ----------
+    window.addEventListener('scroll', () => {
+        // 进度条
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const progress = (scrollTop / scrollHeight) * 100;
+        const progressBar = document.getElementById('scrollProgress');
+        if (progressBar) progressBar.style.width = progress + '%';
+        // 返回顶部按钮
+        const btn = document.getElementById('backToTop');
+        if (btn) {
+            if (scrollTop > 600) btn.classList.add('visible');
+            else btn.classList.remove('visible');
+        }
+    });
 
     // ---------- 页面加载时初始化 ----------
     window.addEventListener('DOMContentLoaded', () => {
