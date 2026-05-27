@@ -1121,9 +1121,28 @@
     .ai-tool-desc { color: rgba(200,184,122,0.7); font-size: 12px; line-height: 1.6; }
     .ai-tool-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 12px; }
     .ai-tool-tag { font-size: 11px; padding: 3px 10px; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.2); border-radius: 10px; color: #c8b87a; }
+    /* ========== 传播方案看板 ========== */
+    .spread-section { padding: 70px 20px 80px; background: linear-gradient(180deg, #07070f 0%, #0a0a1a 100%); }
+    .spread-dashboard { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; max-width: 1000px; margin: 0 auto 40px; }
+    .spread-metric { background: rgba(212,175,55,0.04); border: 1px solid rgba(212,175,55,0.15); border-radius: 14px; padding: 28px 16px; text-align: center; }
+    .spread-metric .metric-val { font-size: 36px; font-weight: 700; color: var(--shengtang-gold); margin-bottom: 6px; }
+    .spread-metric .metric-label { font-size: 13px; color: rgba(200,184,122,0.7); }
+    .spread-plan { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    .spread-card { background: rgba(212,175,55,0.04); border: 1px solid rgba(212,175,55,0.15); border-radius: 12px; padding: 24px 20px; }
+    .spread-card h4 { color: var(--shengtang-gold); font-size: 15px; margin-bottom: 10px; }
+    .spread-card p { color: rgba(200,184,122,0.7); font-size: 13px; line-height: 1.7; }
+    .spread-card .spread-icon { font-size: 28px; margin-bottom: 12px; }
+
+    /* ========== 语音朗读按钮 ========== */
+    .btn-narrate { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; padding: 8px 18px; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); border-radius: 20px; color: var(--shengtang-gold); font-size: 13px; cursor: pointer; transition: all .2s; }
+    .btn-narrate:hover { background: rgba(212,175,55,0.2); }
+    .btn-narrate.speaking { background: rgba(212,175,55,0.25); border-color: var(--shengtang-gold); }
+
     @media(max-width:768px){
       .prompt-select-grid{grid-template-columns:1fr}
       .ai-tools-grid{grid-template-columns:repeat(2,1fr)}
+      .spread-dashboard{grid-template-columns:repeat(2,1fr)}
+      .spread-plan{grid-template-columns:1fr}
     }
     </style>
 </head>
@@ -1201,7 +1220,7 @@
         </div>
 
         <div class="series-block fade-in" id="libai">
-            <h3 class="series-title">李白 × 大唐不夜城 系列</h3>
+            <h3 class="series-title">李白 × 大唐不夜城 系列 <button class="btn-narrate" onclick="narrateSeries('libai')">🔊 朗读介绍</button></h3>
             <p class="series-description">李白，盛唐浪漫主义诗歌的已峰代表，少年意气入长安、诗酒风流动京华，其狂放洒脱的文人气质与长安开放包容的盛世精神高度契合。大唐不夜城作为西安盛唐文化核心地标，以贞观之治、开元盛世为文脉内核，集灯火演艺、诗词意境、市井繁华于一体，完美承载了诗仙笔下的长安气象。本系列以李白行迹为叙事线索，将诗仙豪情与盛唐灯火相融，用年轻化的国风视觉语言还原长安盛景，让王者荣耀英雄 IP 与西安城市文脉实现深度联结与精神共鸣。</p>
             <div class="works-grid">
                 <div class="work-card" data-index="0">
@@ -1229,7 +1248,7 @@
         </div>
 
         <div class="series-block fade-in" id="wanger">
-            <h3 class="series-title">上官婉儿 × 大雁塔 系列</h3>
+            <h3 class="series-title">上官婉儿 × 大雁塔 系列 <button class="btn-narrate" onclick="narrateSeries('wanger')">🔊 朗读介绍</button></h3>
             <p class="series-description">上官婉儿以女子之身执掌文诰、品评天下文士，是盛唐文坛与科举文化的标志性人物，以才情与胆识撑起"称量天下士"的传奇，成为古代女性文胆与文脉传承的重要象征。大雁塔作为唐代"雁塔题名"的文化圣地，是万千进士心中的精神图腾，承载着文人登科入仕、以文报国的理想与风骨，更是盛唐文教昌盛的核心地标。二者在文气、风骨、传承三大精神内核上高度契合、彼此呼应，共同勾勒出盛唐文人风骨与长安文脉的精神底色。</p>
             <div class="works-grid">
                 <div class="work-card" data-index="3">
@@ -1257,7 +1276,7 @@
         </div>
 
         <div class="series-block fade-in" id="yuhuan">
-            <h3 class="series-title">杨玉环 × 华清宫 系列</h3>
+            <h3 class="series-title">杨玉环 × 华清宫 系列 <button class="btn-narrate" onclick="narrateSeries('yuhuan')">🔊 朗读介绍</button></h3>
             <p class="series-description">杨玉环作为盛唐宫廷美学与乐舞文化的标志性人物，身姿雍容、才情卓绝，与霓裳羽衣、梨园雅乐等经典盛唐意象深度绑定，是长安盛世风华最具代表性的符号。华清宫作为皇家御苑，集骊山温泉、海棠汤御池、梨园乐舞、长生盟誓、《长恨歌》传奇于一体，承载着唐代宫廷的浪漫气韵与盛世审美，是盛唐宫廷文化最具代表性的实景载体。本系列以典雅华贵的唐代宫廷美学为创作基底，将英雄 IP 与地标文化深度融合，用细腻唯美的画面再现盛唐极致风华。</p>
             <div class="works-grid">
                 <div class="work-card" data-index="6">
@@ -1807,6 +1826,49 @@
                     <span class="ai-tool-tag">效果评测</span>
                     <span class="ai-tool-tag">质量优化</span>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 传播方案与数据看板 ===== -->
+    <section class="spread-section" id="spread">
+        <div class="section-header fade-in">
+            <h2>传播方案设计</h2>
+            <p class="section-subtitle">面向 Z 世代用户群体，设计可落地、可量化的全域传播路径</p>
+        </div>
+        <div class="spread-dashboard fade-in">
+            <div class="spread-metric">
+                <div class="metric-val" data-target="5000" data-suffix="+">0</div>
+                <div class="metric-label">预估首月曝光量</div>
+            </div>
+            <div class="spread-metric">
+                <div class="metric-val" data-target="85" data-suffix="%">0</div>
+                <div class="metric-label">目标用户 18-30 岁占比</div>
+            </div>
+            <div class="spread-metric">
+                <div class="metric-val" data-target="9" data-suffix="条">0</div>
+                <div class="metric-label">短视频/图文内容产出</div>
+            </div>
+            <div class="spread-metric">
+                <div class="metric-val" data-target="3" data-suffix="大">0</div>
+                <div class="metric-label">核心传播平台覆盖</div>
+            </div>
+        </div>
+        <div class="spread-plan fade-in">
+            <div class="spread-card">
+                <div class="spread-icon">📱</div>
+                <h4>短视频平台传播</h4>
+                <p>将 9 幅国风插画制作为 15-60 秒竖版短视频，配合热门话题标签 #王者荣耀西安 #盛唐国风 投放抖音、视频号，利用电竞 + 文旅双流量池触达年轻用户。</p>
+            </div>
+            <div class="spread-card">
+                <div class="spread-icon">🌐</div>
+                <h4>社交媒体互动</h4>
+                <p>在微博、小红书发起 #诗韵长安AI创作挑战#，用户使用本站 Prompt 工具生成自己的国风图，形成 UGC 裂变传播，激活粉丝创作热情。</p>
+            </div>
+            <div class="spread-card">
+                <div class="spread-icon">🏛️</div>
+                <h4>线下景区联动</h4>
+                <p>与大唐不夜城、华清宫景区合作，在景区 LED 屏/互动装置展示 AI 插画，游客扫码访问本站参与互动，实现线上线下流量闭环。</p>
             </div>
         </div>
     </section>
@@ -2745,6 +2807,63 @@ if __name__ == "__main__":
     });
     const _titleEl = document.getElementById('lightboxTitle');
     if (_titleEl) _ltObserver.observe(_titleEl, { childList: true, subtree: true, characterData: true });
+
+    // ---------- AI 语音朗读功能（Web Speech API） ----------
+    let _currentUtterance = null;
+    let _currentBtn = null;
+    const _narrateTexts = {
+        libai: '李白，大唐不夜城系列。李白携酒仗剑踏入长安天街，再现少年诗仙初入长安的豪情。醉中舞剑于灯火长街，剑光与万家灯火交相辉映。高台举杯邀月，诗思随月光洒落长街，再现唐诗意境与长安夜景相融的经典画面。',
+        wanger: '上官婉儿，大雁塔系列。执笔墨立于大雁塔下，字迹化蝶绕塔飞升，象征以笔墨续长安文脉。于雁塔题名处挥毫，再现唐代文人登塔题名的经典场景。登塔俯瞰长安城，诗笺随风散落，象征以才评天下、以笔定文风。',
+        yuhuan: '杨玉环，华清宫系列。于华清宫前抚弦弹奏，霓裳羽衣随风轻扬，尽显盛唐宫廷乐舞之美。立于海棠汤遗址旁，水雾缭绕，还原皇家温泉文化与盛唐女性美学。月夜之下于长生殿前抚琴寄情，再现长恨歌中的盛唐诗意。'
+    };
+    function narrateSeries(id) {
+        const btn = document.querySelector('#' + id + ' .btn-narrate');
+        if (_currentUtterance && speechSynthesis.speaking) {
+            speechSynthesis.cancel();
+            if (_currentBtn) _currentBtn.classList.remove('speaking');
+            if (_currentBtn === btn) { _currentBtn = null; return; }
+        }
+        const text = _narrateTexts[id];
+        if (!text) return;
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'zh-CN';
+        utter.rate = 0.9;
+        utter.pitch = 1.0;
+        utter.onend = () => { btn.classList.remove('speaking'); _currentBtn = null; };
+        utter.onerror = () => { btn.classList.remove('speaking'); _currentBtn = null; };
+        btn.classList.add('speaking');
+        btn.innerHTML = '🔊 朗读中...';
+        utter.onend = () => { btn.classList.remove('speaking'); btn.innerHTML = '🔊 朗读介绍'; _currentBtn = null; };
+        _currentBtn = btn;
+        _currentUtterance = utter;
+        speechSynthesis.speak(utter);
+    }
+
+    // ---------- 传播方案数字滚动动画 ----------
+    function animateMetrics() {
+        document.querySelectorAll('.metric-val').forEach(el => {
+            const target = parseInt(el.dataset.target);
+            const suffix = el.dataset.suffix || '';
+            let current = 0;
+            const step = Math.max(1, Math.floor(target / 60));
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) { current = target; clearInterval(timer); }
+                el.textContent = current + suffix;
+            }, 30);
+        });
+    }
+    // Intersection Observer 触发数字动画
+    const _spreadObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateMetrics();
+                _spreadObs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+    const _spreadDash = document.querySelector('.spread-dashboard');
+    if (_spreadDash) _spreadObs.observe(_spreadDash);
 
     // ---------- 页面加载时初始化 ----------
     window.addEventListener('DOMContentLoaded', () => {
