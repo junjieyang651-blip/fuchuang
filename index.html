@@ -1170,6 +1170,20 @@
       .spread-dashboard{grid-template-columns:repeat(2,1fr)}
       .spread-plan{grid-template-columns:1fr}
     }
+    /* ========== Canvas 粒子特效 ========== */
+    .particle-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+    .hero-section { position: relative; }
+    .hero-section > *:not(.particle-canvas) { position: relative; z-index: 1; }
+    /* ========== AI 检测可视化 ========== */
+    .detect-btn { position: absolute; bottom: 10px; right: 10px; padding: 5px 12px; font-size: 11px; background: rgba(0,0,0,0.7); color: #4af; border: 1px solid #4af; border-radius: 4px; cursor: pointer; z-index: 3; opacity: 0; transition: opacity .3s; }
+    .work-card:hover .detect-btn { opacity: 1; }
+    .detect-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+    .detect-box { position: absolute; border: 2px solid #4af; border-radius: 3px; }
+    .detect-label { position: absolute; top: -18px; left: 0; background: #4af; color: #000; font-size: 10px; padding: 1px 6px; border-radius: 2px; white-space: nowrap; font-weight: 600; }
+    .work-card { position: relative; overflow: hidden; }
+    /* ========== 音频频谱 ========== */
+    .audio-visualizer { display: flex; align-items: flex-end; gap: 2px; height: 24px; margin-top: 8px; justify-content: center; }
+    .audio-bar { width: 3px; background: var(--shengtang-gold); border-radius: 2px; transition: height .1s; }
     </style>
 </head>
 <body>
@@ -1194,6 +1208,7 @@
 
     <!-- 首屏英雄区 -->
     <section class="hero-section" id="hero">
+        <canvas id="particleCanvas" class="particle-canvas"></canvas>
         <div class="hero-prefix fade-in">服务创新大赛 D04 赛道参赛作品</div>
         <h1 class="hero-title fade-in">诗韵长安・峡谷寻踪</h1>
         <p class="hero-subtitle fade-in">王者荣耀 × 西安盛唐文旅 数字融合创新项目</p>
@@ -3007,6 +3022,134 @@ if __name__ == "__main__":
     }, { threshold: 0.3 });
     const _summaryEl = document.querySelector('.ai-tools-summary');
     if (_summaryEl) _summaryObs.observe(_summaryEl);
+
+    // ========== Canvas 国风粒子特效 ==========
+    (function initParticles() {
+        const canvas = document.getElementById('particleCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let W, H, particles = [];
+        function resize() {
+            const hero = canvas.parentElement;
+            W = canvas.width = hero.offsetWidth;
+            H = canvas.height = hero.offsetHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+        const COLORS = ['rgba(212,175,55,0.6)', 'rgba(232,200,80,0.4)', 'rgba(255,180,120,0.3)', 'rgba(200,100,100,0.3)'];
+        for (let i = 0; i < 60; i++) {
+            particles.push({
+                x: Math.random() * W,
+                y: Math.random() * H,
+                r: Math.random() * 3 + 1,
+                dx: (Math.random() - 0.5) * 0.3,
+                dy: Math.random() * 0.5 + 0.2,
+                color: COLORS[Math.floor(Math.random() * COLORS.length)],
+                alpha: Math.random() * 0.5 + 0.3,
+                swing: Math.random() * Math.PI * 2
+            });
+        }
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+            particles.forEach(p => {
+                p.swing += 0.01;
+                p.x += p.dx + Math.sin(p.swing) * 0.3;
+                p.y += p.dy;
+                if (p.y > H + 10) { p.y = -10; p.x = Math.random() * W; }
+                if (p.x > W + 10) p.x = -10;
+                if (p.x < -10) p.x = W + 10;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.alpha;
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
+    })();
+
+    // ========== AI 目标检测可视化（模拟 YOLO 标注） ==========
+    const _detectData = {
+        0: [{label:'李白(人物)',x:25,y:15,w:50,h:75,conf:0.96},{label:'长剑(武器)',x:55,y:40,w:18,h:35,conf:0.91},{label:'灯笼(场景)',x:5,y:10,w:15,h:20,conf:0.87}],
+        1: [{label:'李白(人物)',x:20,y:10,w:55,h:80,conf:0.97},{label:'剑光(特效)',x:40,y:20,w:35,h:50,conf:0.88},{label:'灯火(场景)',x:0,y:0,w:100,h:30,conf:0.82}],
+        2: [{label:'李白(人物)',x:30,y:20,w:40,h:70,conf:0.95},{label:'酒杯(道具)',x:45,y:30,w:12,h:15,conf:0.89},{label:'明月(场景)',x:60,y:5,w:20,h:20,conf:0.93}],
+        3: [{label:'上官婉儿(人物)',x:25,y:15,w:45,h:75,conf:0.96},{label:'毛笔(道具)',x:50,y:25,w:10,h:30,conf:0.90},{label:'大雁塔(建筑)',x:60,y:5,w:35,h:80,conf:0.94}],
+        4: [{label:'上官婉儿(人物)',x:20,y:20,w:45,h:70,conf:0.95},{label:'碑文(文物)',x:5,y:30,w:20,h:50,conf:0.86},{label:'塔身(建筑)',x:65,y:0,w:30,h:90,conf:0.92}],
+        5: [{label:'上官婉儿(人物)',x:30,y:15,w:40,h:70,conf:0.94},{label:'诗笺(道具)',x:15,y:40,w:20,h:15,conf:0.85},{label:'城郭(场景)',x:0,y:60,w:100,h:40,conf:0.88}],
+        6: [{label:'杨玉环(人物)',x:25,y:15,w:50,h:75,conf:0.97},{label:'琵琶(乐器)',x:40,y:35,w:20,h:30,conf:0.92},{label:'华清宫(建筑)',x:0,y:0,w:100,h:40,conf:0.90}],
+        7: [{label:'杨玉环(人物)',x:30,y:20,w:40,h:70,conf:0.96},{label:'海棠汤(场景)',x:0,y:50,w:100,h:50,conf:0.91},{label:'水雾(特效)',x:10,y:60,w:80,h:30,conf:0.84}],
+        8: [{label:'杨玉环(人物)',x:25,y:15,w:45,h:70,conf:0.95},{label:'古琴(乐器)',x:35,y:55,w:25,h:15,conf:0.89},{label:'长生殿(建筑)',x:50,y:0,w:50,h:50,conf:0.93}]
+    };
+    function toggleDetect(idx, btn) {
+        const card = btn.closest('.work-card');
+        let overlay = card.querySelector('.detect-overlay');
+        if (overlay) { overlay.remove(); btn.textContent = 'AI 检测'; return; }
+        overlay = document.createElement('div');
+        overlay.className = 'detect-overlay';
+        const boxes = _detectData[idx] || [];
+        boxes.forEach(b => {
+            const box = document.createElement('div');
+            box.className = 'detect-box';
+            box.style.cssText = 'left:'+b.x+'%;top:'+b.y+'%;width:'+b.w+'%;height:'+b.h+'%';
+            const lbl = document.createElement('span');
+            lbl.className = 'detect-label';
+            lbl.textContent = b.label + ' ' + (b.conf*100).toFixed(0) + '%';
+            box.appendChild(lbl);
+            overlay.appendChild(box);
+        });
+        card.appendChild(overlay);
+        btn.textContent = '关闭检测';
+    }
+    // 自动给每个 work-card 加检测按钮
+    document.querySelectorAll('.work-card').forEach(card => {
+        const idx = card.getAttribute('data-index');
+        if (idx !== null && _detectData[idx]) {
+            const btn = document.createElement('button');
+            btn.className = 'detect-btn';
+            btn.textContent = 'AI 检测';
+            btn.onclick = function(e) { e.stopPropagation(); toggleDetect(parseInt(idx), btn); };
+            card.appendChild(btn);
+        }
+    });
+
+    // ========== Web Audio API 音频频谱可视化 ==========
+    let _audioCtx, _analyser, _audioSource, _vizInterval;
+    function initAudioVisualizer(btn) {
+        // 创建频谱容器
+        let viz = btn.parentElement.querySelector('.audio-visualizer');
+        if (!viz) {
+            viz = document.createElement('div');
+            viz.className = 'audio-visualizer';
+            for (let i = 0; i < 16; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'audio-bar';
+                bar.style.height = '2px';
+                viz.appendChild(bar);
+            }
+            btn.parentElement.appendChild(viz);
+        }
+        return viz;
+    }
+    // 劫持 narrateSeries 增加频谱效果
+    const _origNarrate = narrateSeries;
+    narrateSeries = function(id) {
+        const btn = document.querySelector('#' + id + ' .btn-narrate');
+        const viz = initAudioVisualizer(btn);
+        _origNarrate(id);
+        // 模拟频谱动画（Web Speech API 不暴露 AudioNode，用模拟数据）
+        if (_vizInterval) clearInterval(_vizInterval);
+        const bars = viz.querySelectorAll('.audio-bar');
+        _vizInterval = setInterval(() => {
+            if (!speechSynthesis.speaking) {
+                bars.forEach(b => b.style.height = '2px');
+                clearInterval(_vizInterval);
+                return;
+            }
+            bars.forEach(b => { b.style.height = (Math.random() * 20 + 2) + 'px'; });
+        }, 100);
+    };
 
     // ---------- 页面加载时初始化 ----------
     window.addEventListener('DOMContentLoaded', () => {
