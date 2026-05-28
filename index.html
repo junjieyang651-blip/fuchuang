@@ -1201,6 +1201,23 @@
     #backToTop { position: fixed; bottom: 30px; right: 30px; width: 44px; height: 44px; border-radius: 50%; background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.3); color: var(--shengtang-gold); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all .3s; z-index: 9999; backdrop-filter: blur(6px); }
     #backToTop.visible { opacity: 1; visibility: visible; }
     #backToTop:hover { background: rgba(212,175,55,0.3); transform: translateY(-3px); }
+    /* ========== 元器智能体对话 ========== */
+    #aiChatBtn { position: fixed; bottom: 90px; right: 30px; width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #4a90d9, #357abd); border: none; color: #fff; font-size: 24px; cursor: pointer; z-index: 9998; box-shadow: 0 4px 16px rgba(74,144,217,0.4); display: flex; align-items: center; justify-content: center; transition: all .3s; }
+    #aiChatBtn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(74,144,217,0.6); }
+    #aiChatBtn .badge { position: absolute; top: -2px; right: -2px; width: 14px; height: 14px; background: #e74c3c; border-radius: 50%; border: 2px solid #1a1410; }
+    #aiChatPanel { position: fixed; bottom: 90px; right: 90px; width: 380px; height: 560px; background: #fff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); z-index: 9997; display: none; flex-direction: column; overflow: hidden; animation: chatSlideIn .3s; }
+    #aiChatPanel.show { display: flex; }
+    @keyframes chatSlideIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .chat-header { background: linear-gradient(135deg, #4a90d9, #357abd); padding: 14px 18px; color: #fff; display: flex; justify-content: space-between; align-items: center; }
+    .chat-header h4 { font-size: 14px; margin: 0; }
+    .chat-header .chat-close { background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; opacity: 0.8; }
+    .chat-header .chat-close:hover { opacity: 1; }
+    .chat-body { flex: 1; position: relative; }
+    .chat-body iframe { width: 100%; height: 100%; border: none; }
+    .chat-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #666; font-size: 13px; text-align: center; padding: 20px; }
+    .chat-placeholder .cp-icon { font-size: 48px; margin-bottom: 12px; }
+    .chat-placeholder p { margin: 4px 0; }
+    @media(max-width:480px){ #aiChatPanel{width:calc(100vw - 20px);right:10px;bottom:70px;height:70vh;} }
     </style>
 </head>
 <body>
@@ -1214,6 +1231,29 @@
     <div id="scrollProgress"></div>
     <!-- 返回顶部 -->
     <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+    <!-- 腾讯元器AI助手 -->
+    <button id="aiChatBtn" onclick="toggleAiChat()" title="AI 智能助手（腾讯元器）">🤖<span class="badge"></span></button>
+    <div id="aiChatPanel">
+        <div class="chat-header">
+            <h4>🤖 诗韵长安 AI 导览助手（腾讯元器）</h4>
+            <button class="chat-close" onclick="toggleAiChat()">×</button>
+        </div>
+        <div class="chat-body">
+            <div class="chat-placeholder" id="chatPlaceholder">
+                <div class="cp-icon">🤖</div>
+                <p><strong>诗韵长安 AI 智能导览助手</strong></p>
+                <p>基于腾讯元器平台构建</p>
+                <p style="margin-top:12px;color:#999;font-size:11px">本智能体可回答关于：</p>
+                <p style="color:#4a90d9;font-size:12px">• 王者荣耀英雄与西安文旅的关联</p>
+                <p style="color:#4a90d9;font-size:12px">• 9幅插画的创作理念与设计依据</p>
+                <p style="color:#4a90d9;font-size:12px">• 项目技术架构与AI工具链详情</p>
+                <p style="color:#4a90d9;font-size:12px">• 盛唐文化知识互动问答</p>
+                <p style="margin-top:16px;font-size:11px;color:#aaa">智能体 ID: yuanqi_shiyin_changan<br>平台: 腾讯元器 (yuanqi.tencent.com)</p>
+                <button onclick="loadAiChat()" style="margin-top:16px;padding:10px 24px;background:linear-gradient(135deg,#4a90d9,#357abd);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px;">启动对话</button>
+            </div>
+            <iframe id="chatIframe" style="display:none;" allow="microphone"></iframe>
+        </div>
+    </div>
     <!-- 导航栏 -->
     <header class="nav-header" id="navbar">
         <a href="#hero" class="nav-logo">诗韵长安・峡谷寻踪</a>
@@ -1590,6 +1630,11 @@
         <div class="section-header fade-in">
             <h2>技术创新与工具链</h2>
             <p class="section-subtitle">借鉴王者荣耀与全国多地文旅联名的成熟经验，融合 AI 技术提效与文化深度创新，构建可落地可复用的数字内容方案</p>
+        </div>
+        <!-- 动态技术架构图 -->
+        <div class="arch-diagram fade-in" id="archDiagram">
+            <h3 style="text-align:center;color:var(--shengtang-gold);font-size:16px;margin-bottom:20px;">项目技术架构全景</h3>
+            <canvas id="archCanvas" width="900" height="420" style="width:100%;max-width:900px;display:block;margin:0 auto;"></canvas>
         </div>
         <!-- 项目数据展板 -->
         <div class="stats-board fade-in" id="statsBoard">
@@ -3226,6 +3271,108 @@ if __name__ == "__main__":
             bars.forEach(b => { b.style.height = (Math.random() * 20 + 2) + 'px'; });
         }, 100);
     };
+
+    // ---------- 腾讯元器智能体对话 ----------
+    function toggleAiChat() {
+        const panel = document.getElementById('aiChatPanel');
+        panel.classList.toggle('show');
+    }
+    function loadAiChat() {
+        const placeholder = document.getElementById('chatPlaceholder');
+        const iframe = document.getElementById('chatIframe');
+        iframe.src = 'https://yuanqi.tencent.com/agent/CtvnlJJYbxjz';
+        placeholder.style.display = 'none';
+        iframe.style.display = 'block';
+    }
+
+    // ---------- 动态技术架构图 ----------
+    (function drawArchDiagram() {
+        const canvas = document.getElementById('archCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        const gold = '#D4AF37', dimGold = 'rgba(212,175,55,0.3)', white = '#f5f0e8', blue = '#4a90d9';
+
+        // 节点数据: [x, y, w, h, label, sublabel, color]
+        const nodes = [
+            [380, 10, 140, 44, '用户交互层', 'HTML5 响应式网页', gold],
+            [60, 100, 130, 40, 'Canvas粒子', '国风视觉引擎', dimGold],
+            [220, 100, 130, 40, 'TF.js推理', 'COCO-SSD检测', blue],
+            [400, 100, 130, 40, 'Web Speech', '语音合成朗读', dimGold],
+            [580, 100, 130, 40, 'Prompt引擎', '国风提示词生成', dimGold],
+            [740, 100, 130, 40, '故事模式', '沉浸式全屏轮播', dimGold],
+            [200, 210, 160, 44, '腾讯元宝', '多模态内容生成(图/文/音)', '#e8c850'],
+            [420, 210, 160, 44, '腾讯元器', '智能体编排与工作流', '#e8c850'],
+            [640, 210, 160, 44, 'CodeBuddy', 'AI代码生成与调试', '#e8c850'],
+            [120, 320, 160, 44, '腾讯开悟', 'AI评测与策略优化', '#e8c850'],
+            [350, 320, 180, 44, 'Python + YOLOv8', '目标检测与视频分析', blue],
+            [620, 320, 160, 44, 'GitHub Pages', '自动化部署CI/CD', dimGold],
+            [350, 390, 200, 24, '服务创新大赛 D04 电竞多模态内容创作', '', gold],
+        ];
+
+        // 连线关系 [from, to]
+        const edges = [
+            [0,1],[0,2],[0,3],[0,4],[0,5],
+            [2,6],[2,7],[4,6],
+            [6,9],[7,8],[8,10],[10,11],
+            [9,12],[10,12],[11,12]
+        ];
+
+        let animProgress = 0;
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+
+            // 画连线
+            ctx.strokeStyle = 'rgba(212,175,55,0.25)';
+            ctx.lineWidth = 1.5;
+            const edgesToDraw = Math.floor(edges.length * Math.min(animProgress / 60, 1));
+            for (let i = 0; i < edgesToDraw; i++) {
+                const [fi, ti] = edges[i];
+                const fn = nodes[fi], tn = nodes[ti];
+                ctx.beginPath();
+                ctx.moveTo(fn[0] + fn[2]/2, fn[1] + fn[3]);
+                ctx.lineTo(tn[0] + tn[2]/2, tn[1]);
+                ctx.stroke();
+            }
+
+            // 画节点
+            const nodesToDraw = Math.floor(nodes.length * Math.min(animProgress / 40, 1));
+            for (let i = 0; i < nodesToDraw; i++) {
+                const [x, y, w, h, label, sub, color] = nodes[i];
+                // 背景
+                ctx.fillStyle = 'rgba(26,20,16,0.8)';
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.roundRect(x, y, w, h, 6);
+                ctx.fill();
+                ctx.stroke();
+                // 标签
+                ctx.fillStyle = color;
+                ctx.font = 'bold 12px "Microsoft YaHei"';
+                ctx.textAlign = 'center';
+                ctx.fillText(label, x + w/2, y + (sub ? 18 : h/2 + 4));
+                if (sub) {
+                    ctx.fillStyle = 'rgba(200,184,122,0.6)';
+                    ctx.font = '10px "Microsoft YaHei"';
+                    ctx.fillText(sub, x + w/2, y + 34);
+                }
+            }
+
+            animProgress++;
+            if (animProgress < 80) requestAnimationFrame(draw);
+        }
+
+        // Intersection Observer 触发动画
+        const obs = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                animProgress = 0;
+                draw();
+                obs.unobserve(canvas);
+            }
+        }, { threshold: 0.3 });
+        obs.observe(canvas);
+    })();
 
     // ---------- Splash 加载屏控制 ----------
     (function initSplash() {
