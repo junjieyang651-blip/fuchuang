@@ -1255,7 +1255,7 @@
     #aiChatBtn { position: fixed; bottom: 90px; right: 30px; width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #4a90d9, #357abd); border: none; color: #fff; font-size: 24px; cursor: pointer; z-index: 9998; box-shadow: 0 4px 16px rgba(74,144,217,0.4); display: flex; align-items: center; justify-content: center; transition: all .3s; }
     #aiChatBtn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(74,144,217,0.6); }
     #aiChatBtn .badge { position: absolute; top: -2px; right: -2px; width: 14px; height: 14px; background: #e74c3c; border-radius: 50%; border: 2px solid #1a1410; }
-    #aiChatPanel { position: fixed; bottom: 30px; right: 30px; width: 700px; height: 750px; background: #fff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); z-index: 9997; display: none; flex-direction: column; overflow: hidden; animation: chatSlideIn .3s; }
+    #aiChatPanel { position: fixed; bottom: 30px; right: 30px; width: 860px; height: 760px; background: #fff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); z-index: 9997; display: none; flex-direction: column; overflow: hidden; animation: chatSlideIn .3s; max-width: calc(100vw - 60px); max-height: calc(100vh - 60px); }
     #aiChatPanel.show { display: flex; }
     @keyframes chatSlideIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
     .chat-header { background: linear-gradient(135deg, #4a90d9, #357abd); padding: 14px 18px; color: #fff; display: flex; justify-content: space-between; align-items: center; }
