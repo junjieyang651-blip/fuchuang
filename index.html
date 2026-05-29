@@ -1299,9 +1299,9 @@
                 <p style="color:#4a90d9;font-size:12px">• 项目技术架构与AI工具链详情</p>
                 <p style="color:#4a90d9;font-size:12px">• 盛唐文化知识互动问答</p>
                 <p style="margin-top:16px;font-size:11px;color:#aaa">智能体 ID: zYuRdHQnS8RA<br>平台: 腾讯元器 (yuanqi.tencent.com)</p>
-                <button onclick="loadAiChat()" style="margin-top:16px;padding:10px 24px;background:linear-gradient(135deg,#4a90d9,#357abd);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px;">启动对话</button>
+                <button onclick="loadAiChat()" style="margin-top:16px;padding:10px 24px;background:linear-gradient(135deg,#4a90d9,#357abd);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px;">打开 AI 对话</button>
+                <p style="margin-top:10px;font-size:11px;color:#888">点击后将在新窗口打开智能体对话界面</p>
             </div>
-            <iframe id="chatIframe" style="display:none;" allow="microphone"></iframe>
         </div>
     </div>
     <!-- 导航栏 -->
@@ -3559,11 +3559,7 @@ if __name__ == "__main__":
         panel.classList.toggle('show');
     }
     function loadAiChat() {
-        const placeholder = document.getElementById('chatPlaceholder');
-        const iframe = document.getElementById('chatIframe');
-        iframe.src = 'https://yuanqi.tencent.com/agent/zYuRdHQnS8RA';
-        placeholder.style.display = 'none';
-        iframe.style.display = 'block';
+        window.open('https://yuanqi.tencent.com/agent/zYuRdHQnS8RA', '_blank');
     }
 
     // ---------- 动态技术架构图 ----------
