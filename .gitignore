@@ -17,3 +17,8 @@ Thumbs.db
 # Temp
 temp/
 tmp/
+.vercel
+.vercel-tmp/
+run-*.bat
+step*.png
+webpage_screenshot.png
