@@ -31,7 +31,7 @@
             --border-radius: 8px;
         }
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; font-size: 16px; }
+        html { font-size: 16px; }
         body {
             font-family: var(--font-body);
             color: var(--text-light);
@@ -1198,7 +1198,11 @@
     .splash-bar { width: 0%; height: 100%; background: linear-gradient(90deg, var(--shengtang-gold), #e8c850); border-radius: 2px; transition: width .3s; }
     @keyframes splashPulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
     /* ========== 滚动进度条 ========== */
-    #scrollProgress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--shengtang-gold), #e8c850); z-index: 10000; width: 0%; transition: width .1s; }
+    #scrollProgress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--shengtang-gold), #e8c850); z-index: 10000; width: 0%; transition: width .1s; display: none; }
+    
+    /* ====== Page Tab 切换 ====== */
+    .page { display: none; }
+    .page.active { display: block; }
     /* ========== 王者设计解码 ========== */
     .design-section { padding: 100px 20px; max-width: 1200px; margin: 0 auto; position: relative; overflow: hidden; }
     .design-decode-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 30px; margin-top: 40px; }
@@ -1323,24 +1327,26 @@
     </div>
     <!-- 导航栏 -->
     <header class="nav-header" id="navbar">
-        <a href="#hero" class="nav-logo">诗韵长安・峡谷寻踪</a>
+        <a href="#page-hero" class="nav-logo" onclick="event.preventDefault();switchPage('page-hero');">诗韵长安・峡谷寻踪</a>
         <button class="hamburger" id="hamburger" aria-label="菜单">
             <span></span><span></span><span></span>
         </button>
         <nav>
             <ul class="nav-menu" id="navMenu">
-                <li><a href="#hero" class="active">首页</a></li>
-                <li><a href="#works">插画画廊</a></li>
-                <li><a href="#design-decode">设计解码</a></li>
-                <li><a href="#route">打卡路线</a></li>
-                <li><a href="#video">视频专区</a></li>
-                <li><a href="#tools" style="color: var(--accent-gold);">实用工具</a></li>
-                <li><a href="#tech">技术创新</a></li>
-                                <li><a href="#prompt-tool">AI 工具</a></li>
+                <li><a href="#page-hero" class="nav-link active" data-page="page-hero">首页</a></li>
+                <li><a href="#page-works" class="nav-link" data-page="page-works">插画画廊</a></li>
+                <li><a href="#page-design" class="nav-link" data-page="page-design">设计解码</a></li>
+                <li><a href="#page-route" class="nav-link" data-page="page-route">打卡路线</a></li>
+                <li><a href="#page-video" class="nav-link" data-page="page-video">视频专区</a></li>
+                <li><a href="#page-tools" class="nav-link" data-page="page-tools" style="color: var(--accent-gold);">实用工具</a></li>
+                <li><a href="#page-tech" class="nav-link" data-page="page-tech">技术创新</a></li>
+                <li><a href="#page-ai" class="nav-link" data-page="page-ai">AI 工具</a></li>
             </ul>
         </nav>
     </header>
 
+    <!-- ====== PAGE: 首页 ====== -->
+    <div class="page active" id="page-hero">
     <!-- 首屏英雄区 -->
     <section class="hero-section" id="hero">
         <canvas id="particleCanvas" class="particle-canvas"></canvas>
@@ -1388,6 +1394,25 @@
         </div>
     </section>
 
+    <!-- 项目简介 -->
+    <section class="intro-section" id="intro">
+        <div class="intro-container">
+            <h2 class="section-title fade-in">项目简介</h2>
+            <p class="fade-in" style="text-align:center;color:var(--text-secondary);margin-bottom:36px;font-size:14px;">按区域赛初赛提交材料规范呈现</p>
+            <div class="intro-grid">
+                <div class="intro-card fade-in"><h3>📋 项目基础信息</h3><p><strong>项目名称：</strong>诗韵长安・峡谷寻踪 —— 王者荣耀 × 西安盛唐文旅融合创新项目<br><strong>参赛赛道：</strong>服务创新大赛 D04 电竞多模态内容创作<br><strong>选题方向：</strong>电竞文旅 —— 将电竞 IP 元素与城市文旅深度融合<br><strong>团队名称：</strong>诗韵长安・峡谷寻踪项目组<br><strong>开发工具：</strong>腾讯元宝 / CodeBuddy / 腾讯元器 / 腾讯开悟比赛平台<br><strong>内容形态：</strong>多模态（文本 + 图像 + 音频 + 视频 + 交互网页 + AI智能体）</p></div>
+                <div class="intro-card fade-in"><h3>🔍 项目需求分析</h3><p><strong>市场痛点：</strong>传统文旅宣传形式老化，难以触达 Z 世代年轻用户群体<br><strong>用户需求：</strong>18-30 岁电竞用户渴望用熟悉的 IP 语言了解传统文化<br><strong>赛事要求：</strong>运用多模态 AIGC 工具创作具备传播力、感染力的数字内容<br><strong>核心挑战：</strong>让电竞英雄 IP 与盛唐文化产生真实的情感连接</p></div>
+                <div class="intro-card fade-in"><h3>💡 解决方案思路</h3><p><strong>核心策略：</strong>以「英雄回归长安」为叙事主线，三位英雄联动三大地标，构建"电竞+文旅"内容体系<br><strong>创作方法：</strong>腾讯 AI 四大工具全流程提效（元宝→元器→CodeBuddy→开悟）<br><strong>差异化：</strong>构建有叙事深度、有情感表达、有传播策略的完整创意作品</p></div>
+                <div class="intro-card fade-in"><h3>⚙️ 关键功能说明</h3><p><strong>①</strong> 9幅国风AI插画系列 <strong>②</strong> AI智能导览助手 <strong>③</strong> 多模态创作工具 <strong>④</strong> 沉浸式故事体验 <strong>⑤</strong> 文旅打卡路线 <strong>⑥</strong> TensorFlow.js智能识别</p></div>
+                <div class="intro-card fade-in"><h3>🎯 项目使用场景</h3><p><strong>线上传播：</strong>短视频+话题标签传播 <strong>景区互动：</strong>扫码对话AI导览 <strong>UGC创作：</strong>Prompt工具二次创作 <strong>赛事展示：</strong>Demo网站完整展示</p></div>
+                <div class="intro-card fade-in"><h3>🤖 AI工具使用说明</h3><p><strong>工作流：</strong>策划(元宝)→Prompt设计→图像生成(元宝)→智能体(元器)→开发(CodeBuddy)→评测(开悟)<br><strong>元器智能体：</strong>通过API接入网站，无需登录即可对话<br><strong>CodeBuddy：</strong>辅助完成3800+行前端代码与Serverless部署</p></div>
+            </div>
+        </div>
+    </section>
+    </div><!-- /page-hero -->
+
+    <!-- ====== PAGE: 插画画廊 ====== -->
+    <div class="page" id="page-works">
     <!-- 作品展示区 -->
     <section class="works-section" id="works">
         <div class="section-header fade-in">
@@ -1479,7 +1504,10 @@
             </div>
         </div>
     </section>
+    </div><!-- /page-works -->
 
+    <!-- ====== PAGE: 设计解码 ====== -->
+    <div class="page" id="page-design">
     <!-- 王者设计解码 -->
     <section class="design-section" id="design-decode">
         <div class="section-header fade-in">
@@ -1538,7 +1566,10 @@
             <p>王者荣耀不只是一款游戏——它是中国传统文化面向Z世代的"数字翻译器"。每一个英雄的技能名、台词、皮肤设计都经过严格的历史考据。本项目正是基于这一设计哲学，将游戏中的文化密码"翻译"回现实世界的西安地标，形成"游戏→文化认知→实地体验"的完整闭环。</p>
         </div>
     </section>
+    </div><!-- /page-design -->
 
+    <!-- ====== PAGE: 打卡路线 ====== -->
+    <div class="page" id="page-route">
     <!-- 峡谷打卡路线 -->
     <section class="route-section" id="route">
         <div class="section-header fade-in">
@@ -1679,8 +1710,9 @@
             </div>
         </div>
     </section>
+    </div><!-- /page-route -->
 
-    <!-- 灯箱 -->
+    <!-- 灯箱（全局浮层） -->
     <div class="lightbox" id="lightbox">
         <button class="lightbox-close" id="lightboxClose">&times;</button>
         <button class="lightbox-nav lightbox-prev" id="lightboxPrev">&#10094;</button>
@@ -1698,6 +1730,8 @@
         </div>
     </div>
 
+    <!-- ====== PAGE: 视频专区 ====== -->
+    <div class="page" id="page-video">
     <!-- 视频专区 -->
     <section class="video-section" id="video">
         <div class="section-header fade-in">
@@ -1730,62 +1764,10 @@
             </div>
         </div>
     </section>
+    </div><!-- /page-video -->
 
-    <!-- 项目简介（按区域赛初赛提交材料结构） -->
-    <section class="intro-section" id="intro">
-        <div class="intro-container">
-            <h2 class="section-title fade-in">项目简介</h2>
-            <p class="fade-in" style="text-align:center;color:var(--text-secondary);margin-bottom:36px;font-size:14px;">按区域赛初赛提交材料规范呈现</p>
-            <div class="intro-grid">
-                <div class="intro-card fade-in">
-                    <h3>📋 项目基础信息</h3>
-                    <p><strong>项目名称：</strong>诗韵长安・峡谷寻踪 —— 王者荣耀 × 西安盛唐文旅融合创新项目<br>
-                    <strong>参赛赛道：</strong>服务创新大赛 D04 电竞多模态内容创作<br>
-                    <strong>选题方向：</strong>电竞文旅 —— 将电竞 IP 元素与城市文旅深度融合<br>
-                    <strong>团队名称：</strong>诗韵长安・峡谷寻踪项目组<br>
-                    <strong>开发工具：</strong>腾讯元宝 / CodeBuddy / 腾讯元器 / 腾讯开悟比赛平台<br>
-                    <strong>内容形态：</strong>多模态（文本 + 图像 + 音频 + 视频 + 交互网页 + AI智能体）</p>
-                </div>
-                <div class="intro-card fade-in">
-                    <h3>🔍 项目需求分析</h3>
-                    <p><strong>市场痛点：</strong>传统文旅宣传形式老化，难以触达 Z 世代年轻用户群体；西安拥有丰富盛唐文化资源，但缺少与年轻人共鸣的创新传播载体<br>
-                    <strong>用户需求：</strong>18-30 岁电竞用户渴望在游戏之外获得文化认同感，希望用自己熟悉的 IP 语言了解传统文化<br>
-                    <strong>赛事要求：</strong>深入理解"电竞 IP+"的内容创新逻辑，运用多模态 AIGC 工具进行创意表达，创作具备传播力、感染力和转化潜力的数字内容<br>
-                    <strong>核心挑战：</strong>如何让电竞英雄 IP 与盛唐文化产生真实的情感连接，而非简单的视觉拼贴</p>
-                </div>
-                <div class="intro-card fade-in">
-                    <h3>💡 解决方案思路</h3>
-                    <p><strong>核心策略：</strong>以「英雄回归长安」为叙事主线，选取与盛唐长安有深厚历史渊源的三位王者荣耀英雄（李白、上官婉儿、杨玉环），联动三大城市地标（大唐不夜城、大雁塔、华清宫），构建完整的"电竞+文旅"内容体系<br>
-                    <strong>创作方法：</strong>运用腾讯 AI 生态四大工具（元宝生成多模态内容 → 元器编排智能体工作流 → CodeBuddy 开发交互网站 → 开悟评测优化效果），实现从创意策划到内容产出的全流程 AI 提效<br>
-                    <strong>差异化定位：</strong>不是简单的"AI生图"，而是构建有叙事深度、有情感表达、有传播策略的完整创意作品</p>
-                </div>
-                <div class="intro-card fade-in">
-                    <h3>⚙️ 关键功能说明</h3>
-                    <p><strong>① 国风 AI 插画系列：</strong>9 幅精品国风插画（3 英雄 × 3 地标），每幅配完整叙事与设计理念<br>
-                    <strong>② AI 智能导览助手：</strong>基于腾讯元器的智能体，用户无需登录即可对话，了解项目与文化背景<br>
-                    <strong>③ 多模态创作工具：</strong>在线 Prompt 生成器、字幕生成器、图片处理器、Python 自动化脚本<br>
-                    <strong>④ 沉浸式故事体验：</strong>全屏故事模式，按叙事线索品读九幅长安画卷<br>
-                    <strong>⑤ 文旅打卡路线：</strong>4 条实地游览路线，将游戏场景与真实景点对应<br>
-                    <strong>⑥ TensorFlow.js 智能识别：</strong>浏览器端 AI 目标检测，赋予插画交互能力</p>
-                </div>
-                <div class="intro-card fade-in">
-                    <h3>🎯 项目使用场景</h3>
-                    <p><strong>场景一 · 线上传播：</strong>将 9 幅插画制作为短视频内容，配合 #王者荣耀西安 #盛唐国风 话题标签，在抖音、视频号、小红书进行传播<br>
-                    <strong>场景二 · 景区互动：</strong>游客在大唐不夜城等景区扫码进入本站，与 AI 导览助手对话了解英雄与景点的文化关联<br>
-                    <strong>场景三 · UGC 创作：</strong>用户使用本站 Prompt 工具生成自己的国风电竞插画，形成二次创作裂变<br>
-                    <strong>场景四 · 赛事展示：</strong>作为参赛 Demo 网站，完整展示项目的创意策划、技术实现与传播方案</p>
-                </div>
-                <div class="intro-card fade-in">
-                    <h3>🤖 AI 工具使用说明</h3>
-                    <p><strong>工作流：</strong>内容策划（元宝对话）→ Prompt 工程设计 → 图像生成（元宝 AI 绘画）→ 智能体编排（元器）→ 代码开发（CodeBuddy）→ 效果评测（开悟）→ 迭代优化<br>
-                    <strong>核心 Prompt 示例：</strong>"Chinese ink painting style, Li Bai (King of Glory hero) walking through Tang Dynasty Chang'an night market, golden lanterns, flowing white robes, sword on back, cinematic lighting, 8K, masterpiece"<br>
-                    <strong>元器智能体：</strong>配置"诗韵长安 AI 导览助手"，设定角色知识库涵盖三位英雄历史背景、景点文化、项目技术细节，通过 API 接入网站<br>
-                    <strong>CodeBuddy 开发：</strong>辅助完成 3800+ 行纯原生前端代码、Vercel Serverless 部署、TensorFlow.js 集成</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    <!-- ====== PAGE: 实用工具 ====== -->
+    <div class="page" id="page-tools">
     <!-- 实用功能区 -->
     <section class="tools-section" id="tools">
         <div class="section-header fade-in">
@@ -1918,7 +1900,10 @@
             </div>
         </div>
     </section>
+    </div><!-- /page-tools -->
 
+    <!-- ====== PAGE: 技术创新 ====== -->
+    <div class="page" id="page-tech">
     <!-- 技术创新区 -->
     <section class="tech-section" id="tech">
         <div class="section-header fade-in">
@@ -2111,8 +2096,11 @@
             <p>项目全称：诗韵长安・峡谷寻踪 —— 王者荣耀 × 西安盛唐文旅融合创新项目</p>
         </div>
     </section>
+    </div><!-- /page-tech -->
 
 
+    <!-- ====== PAGE: AI 工具 ====== -->
+    <div class="page" id="page-ai">
     <!-- ===== 国风AI创作Prompt生成器 ===== -->
     <section class="prompt-section" id="prompt-tool">
         <div class="section-header fade-in">
@@ -2375,6 +2363,7 @@
             </div>
         </div>
     </section>
+    </div><!-- /page-ai -->
 
     <!-- 故事模式全屏遮罩 -->
     <div id="storyOverlay">
@@ -2418,7 +2407,7 @@
         const navbar = document.getElementById('navbar');
         const hamburger = document.getElementById('hamburger');
         const navMenu = document.getElementById('navMenu');
-        const navLinks = document.querySelectorAll('.nav-menu a');
+        const navLinks = document.querySelectorAll('.nav-menu a.nav-link');
 
         window.addEventListener('scroll', function() {
             if (window.scrollY > 50) {
@@ -2433,29 +2422,50 @@
             navMenu.classList.toggle('active');
         });
 
+        // ====== Page 切换核心逻辑 ======
+        function switchPage(pageId, pushState) {
+            // 隐藏所有 page
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            // 显示目标 page
+            const target = document.getElementById(pageId);
+            if (target) target.classList.add('active');
+            // 更新导航 active 状态
+            navLinks.forEach(a => a.classList.remove('active'));
+            const activeLink = document.querySelector('.nav-link[data-page="' + pageId + '"]');
+            if (activeLink) activeLink.classList.add('active');
+            // 回到顶部
+            window.scrollTo(0, 0);
+            // 更新 URL hash
+            if (pushState !== false) {
+                history.pushState(null, '', '#' + pageId);
+            }
+            // 触发 fade-in 动画
+            if (target) {
+                target.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+            }
+        }
+
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({ top: targetElement.offsetTop - 80, behavior: 'smooth' });
-                }
+                const pageId = this.getAttribute('data-page');
+                switchPage(pageId);
                 hamburger.classList.remove('active');
                 navMenu.classList.remove('active');
             });
         });
 
-        // scroll fade
-        const fadeElements = document.querySelectorAll('.fade-in');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.15 });
-        fadeElements.forEach(el => observer.observe(el));
+        // 监听浏览器前进/后退
+        window.addEventListener('popstate', function() {
+            const hash = location.hash.replace('#', '') || 'page-hero';
+            switchPage(hash, false);
+        });
+
+        // 首次加载：根据 URL hash 决定显示哪个页面
+        (function initPage() {
+            const hash = location.hash.replace('#', '') || 'page-hero';
+            switchPage(hash, false);
+        })();
 
         // lightbox
         const lightbox = document.getElementById('lightbox');
@@ -3851,14 +3861,9 @@ if __name__ == "__main__":
         });
     })();
 
-    // ---------- 滚动进度条 & 返回顶部 ----------
+    // ---------- 返回顶部 ----------
     window.addEventListener('scroll', () => {
-        // 进度条
         const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const progress = (scrollTop / scrollHeight) * 100;
-        const progressBar = document.getElementById('scrollProgress');
-        if (progressBar) progressBar.style.width = progress + '%';
         // 返回顶部按钮
         const btn = document.getElementById('backToTop');
         if (btn) {
