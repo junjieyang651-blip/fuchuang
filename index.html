@@ -3564,6 +3564,60 @@ if __name__ == "__main__":
         iframe.style.display = 'block';
     }
 
+    // ---------- 拖拽悬浮窗口 ----------
+    (function initDrag() {
+        const panel = document.getElementById('aiChatPanel');
+        const header = panel.querySelector('.chat-header');
+        let isDragging = false, offsetX = 0, offsetY = 0;
+        header.style.cursor = 'move';
+        header.addEventListener('mousedown', function(e) {
+            if (e.target.classList.contains('chat-close')) return;
+            isDragging = true;
+            offsetX = e.clientX - panel.getBoundingClientRect().left;
+            offsetY = e.clientY - panel.getBoundingClientRect().top;
+            panel.style.transition = 'none';
+            e.preventDefault();
+        });
+        document.addEventListener('mousemove', function(e) {
+            if (!isDragging) return;
+            let x = e.clientX - offsetX;
+            let y = e.clientY - offsetY;
+            x = Math.max(0, Math.min(window.innerWidth - panel.offsetWidth, x));
+            y = Math.max(0, Math.min(window.innerHeight - panel.offsetHeight, y));
+            panel.style.left = x + 'px';
+            panel.style.top = y + 'px';
+            panel.style.right = 'auto';
+            panel.style.bottom = 'auto';
+        });
+        document.addEventListener('mouseup', function() {
+            if (isDragging) { isDragging = false; panel.style.transition = ''; }
+        });
+        // 触屏支持
+        header.addEventListener('touchstart', function(e) {
+            if (e.target.classList.contains('chat-close')) return;
+            isDragging = true;
+            const t = e.touches[0];
+            offsetX = t.clientX - panel.getBoundingClientRect().left;
+            offsetY = t.clientY - panel.getBoundingClientRect().top;
+            panel.style.transition = 'none';
+        });
+        document.addEventListener('touchmove', function(e) {
+            if (!isDragging) return;
+            const t = e.touches[0];
+            let x = t.clientX - offsetX;
+            let y = t.clientY - offsetY;
+            x = Math.max(0, Math.min(window.innerWidth - panel.offsetWidth, x));
+            y = Math.max(0, Math.min(window.innerHeight - panel.offsetHeight, y));
+            panel.style.left = x + 'px';
+            panel.style.top = y + 'px';
+            panel.style.right = 'auto';
+            panel.style.bottom = 'auto';
+        });
+        document.addEventListener('touchend', function() {
+            if (isDragging) { isDragging = false; panel.style.transition = ''; }
+        });
+    })();
+
     // ---------- 动态技术架构图 ----------
     (function drawArchDiagram() {
         const canvas = document.getElementById('archCanvas');
