@@ -3638,10 +3638,28 @@ if __name__ == "__main__":
         const messagesDiv = document.getElementById('chatMessages');
         const div = document.createElement('div');
         div.className = 'chat-msg ' + cls;
-        div.textContent = text;
+        if (cls.includes('user') || cls.includes('loading')) {
+            div.textContent = text;
+        } else {
+            div.innerHTML = renderMarkdown(text);
+        }
         messagesDiv.appendChild(div);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
         return div;
+    }
+
+    function renderMarkdown(text) {
+        return text
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/^### (.+)$/gm, '<strong style="display:block;margin:8px 0 4px;font-size:14px;">$1</strong>')
+            .replace(/^## (.+)$/gm, '<strong style="display:block;margin:10px 0 4px;font-size:15px;">$1</strong>')
+            .replace(/^# (.+)$/gm, '<strong style="display:block;margin:12px 0 4px;font-size:16px;">$1</strong>')
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.+?)\*/g, '<em>$1</em>')
+            .replace(/^[*\-] (.+)$/gm, '<span style="display:block;padding-left:12px;">• $1</span>')
+            .replace(/^\d+\. (.+)$/gm, '<span style="display:block;padding-left:12px;">$&</span>')
+            .replace(/\n{2,}/g, '<br><br>')
+            .replace(/\n/g, '<br>');
     }
 
     // ---------- 拖拽悬浮窗口 ----------
