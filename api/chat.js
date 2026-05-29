@@ -41,6 +41,13 @@ export default async function handler(req, res) {
     messages.push({ role: 'user', content: [{ type: 'text', text: message }] });
 
     // 调用腾讯元器 API
+    const requestBody = {
+      app_id: APPID,
+      user_id: 'web_user_001',
+      messages: messages,
+      stream: false
+    };
+
     const response = await fetch('https://yuanqi.tencent.com/openapi/v1/agent/chat/completions', {
       method: 'POST',
       headers: {
@@ -48,12 +55,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${APPKEY}`
       },
-      body: JSON.stringify({
-        assistant_id: 'zYuRdHQnS8RA',
-        user_id: 'web_user_001',
-        messages: messages,
-        stream: false
-      })
+      body: JSON.stringify(requestBody)
     });
 
     if (!response.ok) {
