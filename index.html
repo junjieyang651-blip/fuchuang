@@ -288,6 +288,8 @@
             max-width: 1400px;
             margin: 0 auto;
             padding: 100px 20px;
+            position: relative;
+            overflow: hidden;
         }
         .section-header {
             text-align: center;
@@ -1198,7 +1200,7 @@
     /* ========== 滚动进度条 ========== */
     #scrollProgress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--shengtang-gold), #e8c850); z-index: 10000; width: 0%; transition: width .1s; }
     /* ========== 王者设计解码 ========== */
-    .design-section { padding: 80px 40px; max-width: 1200px; margin: 0 auto; }
+    .design-section { padding: 100px 20px; max-width: 1200px; margin: 0 auto; position: relative; overflow: hidden; }
     .design-decode-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 30px; margin-top: 40px; }
     .design-card { background: var(--dark-bg-light); border: 1px solid var(--border-color); border-radius: 12px; padding: 28px; position: relative; overflow: hidden; transition: all .3s; }
     .design-card:hover { border-color: var(--shengtang-gold); transform: translateY(-4px); box-shadow: 0 8px 30px rgba(212,175,55,0.1); }
@@ -1214,7 +1216,7 @@
     .design-insight p { color: var(--text-secondary); font-size: 14px; max-width: 800px; margin: 0 auto; line-height: 1.8; }
 
     /* ========== 峡谷打卡路线 ========== */
-    .route-section { padding: 80px 40px; max-width: 1200px; margin: 0 auto; }
+    .route-section { padding: 100px 20px; max-width: 1200px; margin: 0 auto; position: relative; overflow: hidden; }
     .route-tabs { display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
     .route-tab { padding: 10px 20px; background: var(--dark-bg-light); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-secondary); cursor: pointer; font-size: 14px; transition: all .3s; }
     .route-tab.active, .route-tab:hover { background: rgba(212,175,55,0.15); border-color: var(--shengtang-gold); color: var(--accent-gold); }
@@ -1235,6 +1237,15 @@
     .route-summary-card { background: var(--dark-bg-light); border: 1px solid var(--border-color); border-radius: 10px; padding: 20px; text-align: center; }
     .route-summary-card .rs-num { font-size: 28px; font-weight: bold; color: var(--shengtang-gold); }
     .route-summary-card .rs-label { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+
+    /* ========== 全局粒子画布（各section背景） ========== */
+    .section-particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+    .design-section > *:not(.section-particles), .route-section > *:not(.section-particles),
+    .video-section > *:not(.section-particles), .intro-section > *:not(.section-particles),
+    .tools-section > *:not(.section-particles), .tech-section > *:not(.section-particles),
+    .prompt-section > *:not(.section-particles), .ai-tools-section > *:not(.section-particles),
+    .spread-section > *:not(.section-particles) { position: relative; z-index: 1; }
+    .video-section, .intro-section, .tools-section, .tech-section, .prompt-section, .ai-tools-section, .spread-section { position: relative; overflow: hidden; }
 
     /* ========== 返回顶部 ========== */
     #backToTop { position: fixed; bottom: 30px; right: 30px; width: 44px; height: 44px; border-radius: 50%; background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.3); color: var(--shengtang-gold); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all .3s; z-index: 9999; backdrop-filter: blur(6px); }
@@ -3337,45 +3348,66 @@ if __name__ == "__main__":
 
     // ========== Canvas 国风粒子特效 ==========
     (function initParticles() {
-        const canvas = document.getElementById('particleCanvas');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        let W, H, particles = [];
-        function resize() {
-            const hero = canvas.parentElement;
-            W = canvas.width = hero.offsetWidth;
-            H = canvas.height = hero.offsetHeight;
-        }
-        resize();
-        window.addEventListener('resize', resize);
+        // global particle system for all sections
+        const sections = document.querySelectorAll('.hero-section, .works-section, .design-section, .route-section, .video-section, .intro-section, .tools-section, .tech-section, .prompt-section, .ai-tools-section, .spread-section');
         const COLORS = ['rgba(212,175,55,0.6)', 'rgba(232,200,80,0.4)', 'rgba(255,180,120,0.3)', 'rgba(200,100,100,0.3)'];
-        for (let i = 0; i < 60; i++) {
-            particles.push({
-                x: Math.random() * W,
-                y: Math.random() * H,
-                r: Math.random() * 3 + 1,
-                dx: (Math.random() - 0.5) * 0.3,
-                dy: Math.random() * 0.5 + 0.2,
-                color: COLORS[Math.floor(Math.random() * COLORS.length)],
-                alpha: Math.random() * 0.5 + 0.3,
-                swing: Math.random() * Math.PI * 2
+        const canvases = [];
+
+        sections.forEach((section, idx) => {
+            let canvas;
+            if (idx === 0) {
+                canvas = document.getElementById('particleCanvas');
+                if (!canvas) return;
+            } else {
+                canvas = document.createElement('canvas');
+                canvas.className = 'section-particles';
+                section.insertBefore(canvas, section.firstChild);
+            }
+            const ctx = canvas.getContext('2d');
+            let W = canvas.width = section.offsetWidth;
+            let H = canvas.height = section.offsetHeight;
+            const particles = [];
+            const count = Math.min(60, Math.floor(W * H / 20000));
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * W,
+                    y: Math.random() * H,
+                    r: Math.random() * 3 + 1,
+                    dx: (Math.random() - 0.5) * 0.3,
+                    dy: Math.random() * 0.5 + 0.2,
+                    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+                    alpha: Math.random() * 0.5 + 0.3,
+                    swing: Math.random() * Math.PI * 2
+                });
+            }
+            canvases.push({ canvas, ctx, section, particles, W, H });
+        });
+
+        function resize() {
+            canvases.forEach(c => {
+                c.W = c.canvas.width = c.section.offsetWidth;
+                c.H = c.canvas.height = c.section.offsetHeight;
             });
         }
+        window.addEventListener('resize', resize);
+
         function draw() {
-            ctx.clearRect(0, 0, W, H);
-            particles.forEach(p => {
-                p.swing += 0.01;
-                p.x += p.dx + Math.sin(p.swing) * 0.3;
-                p.y += p.dy;
-                if (p.y > H + 10) { p.y = -10; p.x = Math.random() * W; }
-                if (p.x > W + 10) p.x = -10;
-                if (p.x < -10) p.x = W + 10;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                ctx.fillStyle = p.color;
-                ctx.globalAlpha = p.alpha;
-                ctx.fill();
-                ctx.globalAlpha = 1;
+            canvases.forEach(c => {
+                c.ctx.clearRect(0, 0, c.W, c.H);
+                c.particles.forEach(p => {
+                    p.swing += 0.01;
+                    p.x += p.dx + Math.sin(p.swing) * 0.3;
+                    p.y += p.dy;
+                    if (p.y > c.H + 10) { p.y = -10; p.x = Math.random() * c.W; }
+                    if (p.x > c.W + 10) p.x = -10;
+                    if (p.x < -10) p.x = c.W + 10;
+                    c.ctx.beginPath();
+                    c.ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    c.ctx.fillStyle = p.color;
+                    c.ctx.globalAlpha = p.alpha;
+                    c.ctx.fill();
+                    c.ctx.globalAlpha = 1;
+                });
             });
             requestAnimationFrame(draw);
         }
