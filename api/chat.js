@@ -35,14 +35,14 @@ export default async function handler(req, res) {
     const messages = [];
     if (history && Array.isArray(history)) {
       history.forEach(item => {
-        messages.push({ role: item.role, content: item.content });
+        messages.push({ role: item.role, content: [{ type: 'text', text: item.content }] });
       });
     }
-    messages.push({ role: 'user', content: message });
+    messages.push({ role: 'user', content: [{ type: 'text', text: message }] });
 
     // 调用腾讯元器 API
     const requestBody = {
-      app_id: APPID,
+      assistant_id: APPID,
       user_id: 'web_user_001',
       messages: messages,
       stream: false
