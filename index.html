@@ -1197,6 +1197,45 @@
     @keyframes splashPulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
     /* ========== 滚动进度条 ========== */
     #scrollProgress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--shengtang-gold), #e8c850); z-index: 10000; width: 0%; transition: width .1s; }
+    /* ========== 王者设计解码 ========== */
+    .design-section { padding: 80px 40px; max-width: 1200px; margin: 0 auto; }
+    .design-decode-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 30px; margin-top: 40px; }
+    .design-card { background: var(--dark-bg-light); border: 1px solid var(--border-color); border-radius: 12px; padding: 28px; position: relative; overflow: hidden; transition: all .3s; }
+    .design-card:hover { border-color: var(--shengtang-gold); transform: translateY(-4px); box-shadow: 0 8px 30px rgba(212,175,55,0.1); }
+    .design-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(to bottom, var(--shengtang-gold), var(--gongqiang-red)); }
+    .design-card .card-hero { font-size: 14px; color: var(--shengtang-gold); font-weight: bold; letter-spacing: 2px; margin-bottom: 6px; }
+    .design-card h4 { font-size: 18px; margin-bottom: 12px; color: var(--text-light); }
+    .design-card .game-ref { background: rgba(212,175,55,0.08); border-left: 3px solid var(--shengtang-gold); padding: 10px 14px; margin: 12px 0; border-radius: 0 6px 6px 0; font-size: 13px; color: var(--text-secondary); }
+    .design-card .game-ref strong { color: var(--accent-gold); }
+    .design-card .history-link { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+    .design-card .history-link em { color: var(--accent-gold); font-style: normal; font-weight: bold; }
+    .design-insight { margin-top: 40px; background: linear-gradient(135deg, rgba(212,175,55,0.05), rgba(139,35,35,0.05)); border: 1px solid var(--border-color); border-radius: 12px; padding: 30px; text-align: center; }
+    .design-insight h4 { color: var(--shengtang-gold); font-size: 18px; margin-bottom: 12px; }
+    .design-insight p { color: var(--text-secondary); font-size: 14px; max-width: 800px; margin: 0 auto; line-height: 1.8; }
+
+    /* ========== 峡谷打卡路线 ========== */
+    .route-section { padding: 80px 40px; max-width: 1200px; margin: 0 auto; }
+    .route-tabs { display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
+    .route-tab { padding: 10px 20px; background: var(--dark-bg-light); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-secondary); cursor: pointer; font-size: 14px; transition: all .3s; }
+    .route-tab.active, .route-tab:hover { background: rgba(212,175,55,0.15); border-color: var(--shengtang-gold); color: var(--accent-gold); }
+    .route-content { margin-top: 30px; }
+    .route-panel { display: none; }
+    .route-panel.active { display: block; }
+    .route-timeline { position: relative; padding-left: 30px; }
+    .route-timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--shengtang-gold), var(--gongqiang-red), var(--shengtang-gold)); }
+    .route-stop { position: relative; margin-bottom: 28px; padding: 20px; background: var(--dark-bg-light); border: 1px solid var(--border-color); border-radius: 10px; transition: all .3s; }
+    .route-stop:hover { border-color: var(--shengtang-gold); }
+    .route-stop::before { content: ''; position: absolute; left: -26px; top: 24px; width: 12px; height: 12px; background: var(--shengtang-gold); border-radius: 50%; border: 2px solid var(--dark-bg); }
+    .route-stop .stop-num { position: absolute; left: -38px; top: 20px; width: 24px; height: 24px; background: var(--shengtang-gold); color: var(--dark-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; }
+    .route-stop h5 { font-size: 16px; color: var(--text-light); margin-bottom: 6px; }
+    .route-stop .stop-meta { font-size: 12px; color: var(--shengtang-gold); margin-bottom: 8px; }
+    .route-stop p { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+    .route-stop .game-connect { margin-top: 10px; padding: 8px 12px; background: rgba(74,144,217,0.1); border-radius: 6px; font-size: 12px; color: #4a90d9; }
+    .route-summary { margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+    .route-summary-card { background: var(--dark-bg-light); border: 1px solid var(--border-color); border-radius: 10px; padding: 20px; text-align: center; }
+    .route-summary-card .rs-num { font-size: 28px; font-weight: bold; color: var(--shengtang-gold); }
+    .route-summary-card .rs-label { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+
     /* ========== 返回顶部 ========== */
     #backToTop { position: fixed; bottom: 30px; right: 30px; width: 44px; height: 44px; border-radius: 50%; background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.3); color: var(--shengtang-gold); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all .3s; z-index: 9999; backdrop-filter: blur(6px); }
     #backToTop.visible { opacity: 1; visibility: visible; }
@@ -1264,9 +1303,10 @@
             <ul class="nav-menu" id="navMenu">
                 <li><a href="#hero" class="active">首页</a></li>
                 <li><a href="#works">插画画廊</a></li>
+                <li><a href="#design-decode">设计解码</a></li>
+                <li><a href="#route">打卡路线</a></li>
                 <li><a href="#video">视频专区</a></li>
                 <li><a href="#tools" style="color: var(--accent-gold);">实用工具</a></li>
-                <li><a href="#intro">项目介绍</a></li>
                 <li><a href="#tech">技术创新</a></li>
                                 <li><a href="#prompt-tool">AI 工具</a></li>
             </ul>
@@ -1408,6 +1448,206 @@
                         <p class="work-meaning">月夜之下，杨玉环于长生殿前抚琴寄情，月光与琴声相融，再现《长恨歌》中浪漫而绵长的盛唐诗意。<br><span style="font-size:0.85em;opacity:0.7">设计依据：华清宫《长恨歌》实景演艺、月夜景观氛围</span></p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 王者设计解码 -->
+    <section class="design-section" id="design-decode">
+        <div class="section-header fade-in">
+            <h2>王者设计解码 · 文化考据</h2>
+            <p class="section-subtitle">揭秘王者荣耀英雄设计中隐藏的盛唐历史密码，理解腾讯游戏的文化设计哲学</p>
+        </div>
+
+        <div class="design-decode-grid">
+            <div class="design-card fade-in">
+                <div class="card-hero">李白 · 青莲剑仙</div>
+                <h4>技能设计中的诗仙意象</h4>
+                <div class="game-ref">
+                    <strong>游戏设计亮点：</strong>技能"将进酒"取自李白同名诗作，大招"青莲剑歌"融入剑器与诗意的双重美学。被动技能"侠客行"致敬《侠客行》中"十步杀一人，千里不留行"的侠义精神。
+                </div>
+                <div class="history-link">
+                    <em>历史考据：</em>史载李白"好剑术，喜任侠"，年轻时曾师从大唐剑圣裴旻学剑。入长安后"仰天大笑出门去，我辈岂是蓬蒿人"，这种少年意气正是游戏中李白飘逸灵动战斗风格的文化原型。大唐不夜城的"诗歌大道"上至今铭刻着他的诗句。
+                </div>
+            </div>
+
+            <div class="design-card fade-in">
+                <div class="card-hero">上官婉儿 · 墨舞风华</div>
+                <h4>操控书法的战斗哲学</h4>
+                <div class="game-ref">
+                    <strong>游戏设计亮点：</strong>技能机制以"笔迹"为核心，飞天时划出的轨迹模拟书法运笔，大招"司彩重章"取名自上官婉儿的文学成就——"称量天下士"。被动"笔阵"暗合"飞白书"的书法美学。
+                </div>
+                <div class="history-link">
+                    <em>历史考据：</em>上官婉儿在武周至睿宗年间主持品评天下文章，设立"昭文馆"广纳贤才。大雁塔"雁塔题名"制度正是在她主政时期达到鼎盛——每期科举状元及第后必登塔题名，她在塔下"称量天下文士"的典故，正是游戏角色"裁判文坛"定位的历史依据。
+                </div>
+            </div>
+
+            <div class="design-card fade-in">
+                <div class="card-hero">杨玉环 · 霓裳风华</div>
+                <h4>乐舞美学的数字重生</h4>
+                <div class="game-ref">
+                    <strong>游戏设计亮点：</strong>作为辅助定位，治愈技能"霓裳曲"来源于《霓裳羽衣舞》——唐玄宗与杨贵妃共同创作的宫廷乐舞。切换"舞/乐"双形态的机制，对应杨玉环精通琵琶与舞蹈的双重才艺。
+                </div>
+                <div class="history-link">
+                    <em>历史考据：</em>《旧唐书》载杨玉环"善歌舞，通音律"，曾在华清宫梨园亲自编排《霓裳羽衣曲》。华清宫至今保留梨园遗址，是中国戏曲艺术的发源地——"梨园弟子"一词正源于此。今天华清宫的《长恨歌》实景演出，让千年前的宫廷乐舞再次鲜活。
+                </div>
+            </div>
+
+            <div class="design-card fade-in">
+                <div class="card-hero">长安赛年主题</div>
+                <h4>王者荣耀的城市文创战略</h4>
+                <div class="game-ref">
+                    <strong>合作实例：</strong>王者荣耀已与敦煌（飞天皮肤）、成都（赛事主场）、苏州（昆曲皮肤）等城市深度合作。西安作为盛唐文化核心城市，与李白、上官婉儿、杨玉环等英雄形成天然文化绑定。
+                </div>
+                <div class="history-link">
+                    <em>设计哲学：</em>腾讯游戏的文创理念是<em>"让传统文化以年轻人喜爱的方式活起来"</em>。通过英雄技能命名、皮肤视觉、背景故事等多维度植入文化基因，让数亿玩家在游戏中自然接触历史——这正是电竞IP赋能文旅的底层逻辑。
+                </div>
+            </div>
+        </div>
+
+        <div class="design-insight fade-in">
+            <h4>🎮 设计解码 · 核心洞察</h4>
+            <p>王者荣耀不只是一款游戏——它是中国传统文化面向Z世代的"数字翻译器"。每一个英雄的技能名、台词、皮肤设计都经过严格的历史考据。本项目正是基于这一设计哲学，将游戏中的文化密码"翻译"回现实世界的西安地标，形成"游戏→文化认知→实地体验"的完整闭环。</p>
+        </div>
+    </section>
+
+    <!-- 峡谷打卡路线 -->
+    <section class="route-section" id="route">
+        <div class="section-header fade-in">
+            <h2>峡谷打卡路线 · 西安寻踪指南</h2>
+            <p class="section-subtitle">为王者荣耀粉丝定制的西安文旅打卡路线，寻找英雄背后的真实场景</p>
+        </div>
+
+        <div class="route-tabs fade-in">
+            <div class="route-tab active" onclick="switchRoute('libai-route')">🗡️ 李白·诗仙之路</div>
+            <div class="route-tab" onclick="switchRoute('waner-route')">✒️ 婉儿·文脉之旅</div>
+            <div class="route-tab" onclick="switchRoute('yuhuan-route')">🎵 玉环·霓裳之行</div>
+            <div class="route-tab" onclick="switchRoute('oneday-route')">⭐ 一日精华线</div>
+        </div>
+
+        <div class="route-content">
+            <!-- 李白路线 -->
+            <div class="route-panel active" id="libai-route">
+                <div class="route-timeline">
+                    <div class="route-stop fade-in">
+                        <div class="stop-num">1</div>
+                        <h5>大唐不夜城 · 贞观广场</h5>
+                        <div class="stop-meta">📍 雁塔南路 | ⏰ 建议18:00后到达 | 🕐 停留1.5h</div>
+                        <p>李白入长安的第一站。广场上的贞观之治群雕是最佳合影点，日落后灯光亮起，万家灯火的盛世景象与"将进酒·入长安"插画高度还原。</p>
+                        <div class="game-connect">🎮 对应游戏：李白台词"大河之剑天上来"的灵感场景——长安天街万灯齐明的壮阔</div>
+                    </div>
+                    <div class="route-stop fade-in">
+                        <div class="stop-num">2</div>
+                        <h5>大唐不夜城 · 诗歌互动大道</h5>
+                        <div class="stop-meta">📍 主步行街中段 | 🕐 停留0.5h</div>
+                        <p>地面投影互动诗词区，踩踏触发唐诗闪现。寻找李白诗句"长安一片月，万户捣衣声"的专属投影点位，拍摄最具游戏感的打卡照。</p>
+                        <div class="game-connect">🎮 对应游戏：李白1技能"将进酒"的剑光轨迹，与地面诗句光线形成呼应</div>
+                    </div>
+                    <div class="route-stop fade-in">
+                        <div class="stop-num">3</div>
+                        <h5>曲江池遗址公园 · 望月台</h5>
+                        <div class="stop-meta">📍 曲江池东路 | ⏰ 建议21:00 | 🕐 停留0.5h</div>
+                        <p>李白"邀明月·诗千行"的灵感原点。月夜登台远望，大唐不夜城万灯如星落地，体验"举杯邀明月"的诗意瞬间。</p>
+                        <div class="game-connect">🎮 对应游戏：李白大招"青莲剑歌"施放时的月光特效，取意自"举杯邀明月，对影成三人"</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 上官婉儿路线 -->
+            <div class="route-panel" id="waner-route">
+                <div class="route-timeline">
+                    <div class="route-stop fade-in">
+                        <div class="stop-num">1</div>
+                        <h5>大雁塔 · 北广场</h5>
+                        <div class="stop-meta">📍 雁塔路南段 | ⏰ 建议9:00 | 🕐 停留1h</div>
+                        <p>大雁塔正面全景拍摄最佳角度，亚洲最大音乐喷泉广场。唐代进士及第后在此"雁塔题名"，是婉儿"称量天下士"的历史舞台。</p>
+                        <div class="game-connect">🎮 对应游戏：上官婉儿飞天时的塔形轨迹，设计灵感直接来自大雁塔的七层宝塔造型</div>
+                    </div>
+                    <div class="route-stop fade-in">
+                        <div class="stop-num">2</div>
+                        <h5>大雁塔 · 登塔题名处</h5>
+                        <div class="stop-meta">📍 塔内四层 | 🕐 停留0.5h | 💰 门票50元</div>
+                        <p>登临四层观览唐代题名碑刻（复制品），感受"慈恩塔下题名处，十七人中最少年"的科举荣光。此处是"题名处·续文脉"插画的直接取景地。</p>
+                        <div class="game-connect">🎮 对应游戏：大招"司彩重章"名称源自上官婉儿主持的"彩章"文学品评制度</div>
+                    </div>
+                    <div class="route-stop fade-in">
+                        <div class="stop-num">3</div>
+                        <h5>大慈恩寺 · 玄奘纪念馆</h5>
+                        <div class="stop-meta">📍 大雁塔景区内 | 🕐 停留0.5h</div>
+                        <p>大雁塔所在寺院，唐代最高学术机构。了解唐代文教制度，理解为何"雁塔题名"是古代文人最高荣耀。</p>
+                        <div class="game-connect">🎮 对应游戏：婉儿被动"笔阵"——文人以笔为刃、以学为甲的精神内核</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 杨玉环路线 -->
+            <div class="route-panel" id="yuhuan-route">
+                <div class="route-timeline">
+                    <div class="route-stop fade-in">
+                        <div class="stop-num">1</div>
+                        <h5>华清宫 · 海棠汤遗址</h5>
+                        <div class="stop-meta">📍 临潼区华清路 | ⏰ 建议10:00 | 🕐 停留1h</div>
+                        <p>杨贵妃专属御汤"海棠汤"的考古遗址，汤池形如海棠花瓣，是"海棠汤·沐凝脂"插画的直接历史依据。白居易"温泉水滑洗凝脂"写的正是此处。</p>
+                        <div class="game-connect">🎮 对应游戏：杨玉环切换"乐"形态时的治愈光环，视觉设计参考了温泉水汽的柔美质感</div>
+                    </div>
+                    <div class="route-stop fade-in">
+                        <div class="stop-num">2</div>
+                        <h5>华清宫 · 梨园遗址</h5>
+                        <div class="stop-meta">📍 景区中部 | 🕐 停留0.5h</div>
+                        <p>中国戏曲发源地，唐玄宗在此创立梨园，杨玉环亲自编排《霓裳羽衣曲》。"梨园弟子"一词即出此处，是中国所有艺术团体"梨园"称谓的源头。</p>
+                        <div class="game-connect">🎮 对应游戏：技能"霓裳曲"的命名与特效音乐，直接取材自历史记载的宫廷乐舞</div>
+                    </div>
+                    <div class="route-stop fade-in">
+                        <div class="stop-num">3</div>
+                        <h5>华清宫 · 《长恨歌》实景演出</h5>
+                        <div class="stop-meta">📍 九龙湖畔 | ⏰ 20:30开演 | 🕐 约70分钟 | 💰 门票268元起</div>
+                        <p>中国首部大型实景历史舞剧，以骊山为幕、湖水为台，震撼再现唐玄宗与杨贵妃的爱情传奇。"长恨歌·月明中"插画的终极沉浸体验。</p>
+                        <div class="game-connect">🎮 对应游戏：杨玉环英雄故事"在天愿作比翼鸟"的史诗叙事，与演出完美对应</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 一日精华线 -->
+            <div class="route-panel" id="oneday-route">
+                <div class="route-timeline">
+                    <div class="route-stop fade-in">
+                        <div class="stop-num">1</div>
+                        <h5>上午：大雁塔 + 大慈恩寺</h5>
+                        <div class="stop-meta">📍 雁塔路 | ⏰ 9:00-11:30 | 解锁：上官婉儿全部打卡点</div>
+                        <p>登塔题名、广场拍照、寺内游览。上午光线最佳，适合拍摄大雁塔正面全景照。</p>
+                    </div>
+                    <div class="route-stop fade-in">
+                        <div class="stop-num">2</div>
+                        <h5>下午：华清宫 半日游</h5>
+                        <div class="stop-meta">📍 临潼区 | ⏰ 13:00-17:00 | 解锁：杨玉环全部打卡点</div>
+                        <p>地铁9号线直达。海棠汤→梨园遗址→长生殿，按故事线游览。若看晚场演出可留到20:30。</p>
+                    </div>
+                    <div class="route-stop fade-in">
+                        <div class="stop-num">3</div>
+                        <h5>晚上：大唐不夜城 夜游</h5>
+                        <div class="stop-meta">📍 雁塔南路 | ⏰ 18:30-22:00 | 解锁：李白全部打卡点</div>
+                        <p>不夜城必须夜游！贞观广场→诗歌大道→曲江池望月。灯火通明时才是"将进酒·入长安"的正确打开方式。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="route-summary fade-in">
+            <div class="route-summary-card">
+                <div class="rs-num">3</div>
+                <div class="rs-label">主题路线</div>
+            </div>
+            <div class="route-summary-card">
+                <div class="rs-num">9+</div>
+                <div class="rs-label">打卡点位</div>
+            </div>
+            <div class="route-summary-card">
+                <div class="rs-num">1-2天</div>
+                <div class="rs-label">推荐行程</div>
+            </div>
+            <div class="route-summary-card">
+                <div class="rs-num">100%</div>
+                <div class="rs-label">插画场景还原</div>
             </div>
         </div>
     </section>
@@ -3273,6 +3513,15 @@ if __name__ == "__main__":
     };
 
     // ---------- 腾讯元器智能体对话 ----------
+    // ---------- 打卡路线切换 ----------
+    function switchRoute(routeId) {
+        document.querySelectorAll('.route-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.route-tab').forEach(t => t.classList.remove('active'));
+        const target = document.getElementById(routeId);
+        if (target) target.classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
     function toggleAiChat() {
         const panel = document.getElementById('aiChatPanel');
         panel.classList.toggle('show');
