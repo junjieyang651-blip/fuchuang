@@ -35,10 +35,10 @@ export default async function handler(req, res) {
     const messages = [];
     if (history && Array.isArray(history)) {
       history.forEach(item => {
-        messages.push({ role: item.role, content: [{ type: 'text', text: item.content }] });
+        messages.push({ role: item.role, content: item.content });
       });
     }
-    messages.push({ role: 'user', content: [{ type: 'text', text: message }] });
+    messages.push({ role: 'user', content: message });
 
     // 调用腾讯元器 API
     const requestBody = {
