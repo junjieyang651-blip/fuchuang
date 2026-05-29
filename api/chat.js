@@ -17,10 +17,18 @@ export default async function handler(req, res) {
   const APPID = process.env.YUANQI_APPID || '2060004427884063808';
 
   try {
-    const { message, history } = req.body;
+    // 兼容处理 body 解析
+    let body = req.body;
+    if (typeof body === 'string') {
+      try { body = JSON.parse(body); } catch(e) { body = {}; }
+    }
+    if (!body) body = {};
+
+    const message = body.message;
+    const history = body.history;
 
     if (!message) {
-      return res.status(400).json({ error: 'Message is required' });
+      return res.status(400).json({ error: 'Message is required', receivedBody: JSON.stringify(body).substring(0, 100) });
     }
 
     // 构建消息列表
@@ -32,7 +40,7 @@ export default async function handler(req, res) {
     }
     messages.push({ role: 'user', content: [{ type: 'text', text: message }] });
 
-    // 调用腾讯元器 API（流式）
+    // 调用腾讯元器 API
     const response = await fetch('https://yuanqi.tencent.com/openapi/v1/agent/chat/completions', {
       method: 'POST',
       headers: {
@@ -50,8 +58,7 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error('Yuanqi API error:', response.status, errText);
-      return res.status(response.status).json({ error: `API error: ${response.status}`, detail: errText });
+      return res.status(200).json({ reply: '', error: `API返回${response.status}`, detail: errText.substring(0, 300) });
     }
 
     const data = await response.json();
@@ -68,12 +75,11 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json({
-      reply: reply || '抱歉，我暂时无法回答这个问题。',
-      raw: data
+      reply: reply || '',
+      debug: !reply ? JSON.stringify(data).substring(0, 500) : undefined
     });
 
   } catch (err) {
-    console.error('Server error:', err);
-    return res.status(500).json({ error: 'Internal server error', detail: err.message });
+    return res.status(200).json({ reply: '', error: 'Server error: ' + err.message });
   }
 }

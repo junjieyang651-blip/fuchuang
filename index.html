@@ -3618,9 +3618,11 @@ if __name__ == "__main__":
                 appendMsg(data.reply, 'bot');
                 chatHistory.push({ role: 'assistant', content: data.reply });
             } else if (data.error) {
-                appendMsg('错误: ' + data.error + (data.detail ? '\n' + data.detail : ''), 'bot');
+                appendMsg('❌ ' + data.error + (data.detail ? '\n' + data.detail.substring(0, 150) : '') + (data.receivedBody ? '\nbody: ' + data.receivedBody : ''), 'bot');
+            } else if (data.debug) {
+                appendMsg('❌ 无回复。原始数据: ' + data.debug.substring(0, 200), 'bot');
             } else {
-                appendMsg('抱歉，获取回复失败。调试信息: ' + JSON.stringify(data).substring(0, 200), 'bot');
+                appendMsg('❌ 未知错误: ' + JSON.stringify(data).substring(0, 200), 'bot');
             }
         } catch (err) {
             loadingEl.remove();
