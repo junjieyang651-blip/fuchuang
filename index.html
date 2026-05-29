@@ -3618,7 +3618,7 @@ if __name__ == "__main__":
                 chatHistory.push({ role: 'user', content: msg });
                 chatHistory.push({ role: 'assistant', content: data.reply });
             } else if (data.error) {
-                appendMsg('❌ ' + data.error + (data.detail ? '\n' + data.detail.substring(0, 150) : '') + (data.receivedBody ? '\nbody: ' + data.receivedBody : ''), 'bot');
+                appendMsg('❌ ' + data.error + '\n' + (data.detail || '') + (data.sentBody ? '\n发送:' + data.sentBody.substring(0, 100) : ''), 'bot');
             } else if (data.debug) {
                 appendMsg('❌ 无回复。原始数据: ' + data.debug.substring(0, 200), 'bot');
             } else {

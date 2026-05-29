@@ -60,7 +60,7 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       const errText = await response.text();
-      return res.status(200).json({ reply: '', error: `API返回${response.status}`, detail: errText.substring(0, 300) });
+      return res.status(200).json({ reply: '', error: `API返回${response.status}`, detail: errText.substring(0, 300), sentBody: JSON.stringify(requestBody).substring(0, 300) });
     }
 
     const data = await response.json();
