@@ -3597,7 +3597,6 @@ if __name__ == "__main__":
 
         // 显示用户消息
         appendMsg(msg, 'user');
-        chatHistory.push({ role: 'user', content: msg });
         input.value = '';
         input.disabled = true;
         document.getElementById('chatSendBtn').disabled = true;
@@ -3616,6 +3615,7 @@ if __name__ == "__main__":
 
             if (data.reply) {
                 appendMsg(data.reply, 'bot');
+                chatHistory.push({ role: 'user', content: msg });
                 chatHistory.push({ role: 'assistant', content: data.reply });
             } else if (data.error) {
                 appendMsg('❌ ' + data.error + (data.detail ? '\n' + data.detail.substring(0, 150) : '') + (data.receivedBody ? '\nbody: ' + data.receivedBody : ''), 'bot');
