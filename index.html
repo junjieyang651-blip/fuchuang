@@ -3617,12 +3617,14 @@ if __name__ == "__main__":
             if (data.reply) {
                 appendMsg(data.reply, 'bot');
                 chatHistory.push({ role: 'assistant', content: data.reply });
+            } else if (data.error) {
+                appendMsg('错误: ' + data.error + (data.detail ? '\n' + data.detail : ''), 'bot');
             } else {
-                appendMsg('抱歉，获取回复失败，请重试。', 'bot');
+                appendMsg('抱歉，获取回复失败。调试信息: ' + JSON.stringify(data).substring(0, 200), 'bot');
             }
         } catch (err) {
             loadingEl.remove();
-            appendMsg('网络错误，请检查连接后重试。', 'bot');
+            appendMsg('网络错误: ' + err.message, 'bot');
         }
 
         input.disabled = false;
