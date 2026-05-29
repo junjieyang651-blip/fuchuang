@@ -1255,7 +1255,7 @@
     #aiChatBtn { position: fixed; bottom: 90px; right: 30px; width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #4a90d9, #357abd); border: none; color: #fff; font-size: 24px; cursor: pointer; z-index: 9998; box-shadow: 0 4px 16px rgba(74,144,217,0.4); display: flex; align-items: center; justify-content: center; transition: all .3s; }
     #aiChatBtn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(74,144,217,0.6); }
     #aiChatBtn .badge { position: absolute; top: -2px; right: -2px; width: 14px; height: 14px; background: #e74c3c; border-radius: 50%; border: 2px solid #1a1410; }
-    #aiChatPanel { position: fixed; bottom: 90px; right: 90px; width: 380px; height: 560px; background: #fff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); z-index: 9997; display: none; flex-direction: column; overflow: hidden; animation: chatSlideIn .3s; }
+    #aiChatPanel { position: fixed; bottom: 90px; right: 90px; width: 420px; height: 620px; background: #fff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); z-index: 9997; display: none; flex-direction: column; overflow: hidden; animation: chatSlideIn .3s; }
     #aiChatPanel.show { display: flex; }
     @keyframes chatSlideIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
     .chat-header { background: linear-gradient(135deg, #4a90d9, #357abd); padding: 14px 18px; color: #fff; display: flex; justify-content: space-between; align-items: center; }
@@ -1288,19 +1288,18 @@
             <h4>🤖 诗韵长安 AI 导览助手（腾讯元器）</h4>
             <button class="chat-close" onclick="toggleAiChat()">×</button>
         </div>
-        <div class="chat-body">
+        <div class="chat-body" id="chatBody">
             <div class="chat-placeholder" id="chatPlaceholder">
                 <div class="cp-icon">🤖</div>
                 <p><strong>诗韵长安 AI 智能导览助手</strong></p>
                 <p style="color:#666;font-size:12px;">基于腾讯元器平台 · 混元大模型驱动</p>
-                <p style="margin-top:14px;color:#999;font-size:11px">智能体知识范围：</p>
-                <p style="color:#4a90d9;font-size:12px">• 王者荣耀英雄与西安文旅的关联</p>
-                <p style="color:#4a90d9;font-size:12px">• 9幅插画的创作理念与设计依据</p>
-                <p style="color:#4a90d9;font-size:12px">• 项目技术架构与AI工具链详情</p>
-                <p style="color:#4a90d9;font-size:12px">• 盛唐文化知识互动问答</p>
-                <a href="https://yuanqi.tencent.com/webim/#/chat/aNhQnc?appid=2060004427884063808&experience=true" target="_blank" style="display:inline-block;margin-top:18px;padding:12px 28px;background:linear-gradient(135deg,#4a90d9,#357abd);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;text-decoration:none;font-weight:bold;">💬 开始对话</a>
-                <p style="margin-top:10px;font-size:11px;color:#aaa">点击后在新页面打开（需微信扫码登录）</p>
+                <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
+                    <button onclick="loadAiChat()" style="padding:12px 28px;background:linear-gradient(135deg,#4a90d9,#357abd);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:bold;">💬 开始对话</button>
+                    <a href="https://yuanqi.tencent.com/webim/#/chat/aNhQnc?appid=2060004427884063808&experience=true" target="_blank" style="font-size:11px;color:#4a90d9;text-decoration:none;">↗ 在新窗口打开</a>
+                </div>
+                <p style="margin-top:10px;font-size:11px;color:#aaa">首次使用需微信扫码登录</p>
             </div>
+            <iframe id="chatIframe" style="display:none;width:100%;height:100%;border:none;" allow="microphone"></iframe>
         </div>
     </div>
     <!-- 导航栏 -->
@@ -3558,7 +3557,11 @@ if __name__ == "__main__":
         panel.classList.toggle('show');
     }
     function loadAiChat() {
-        window.open('https://yuanqi.tencent.com/webim/#/chat/aNhQnc?appid=2060004427884063808&experience=true', '_blank');
+        const placeholder = document.getElementById('chatPlaceholder');
+        const iframe = document.getElementById('chatIframe');
+        iframe.src = 'https://yuanqi.tencent.com/webim/#/chat/aNhQnc?appid=2060004427884063808&experience=true';
+        placeholder.style.display = 'none';
+        iframe.style.display = 'block';
     }
 
     // ---------- 动态技术架构图 ----------
