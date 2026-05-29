@@ -49,8 +49,8 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${APPKEY}`
       },
       body: JSON.stringify({
-        app_id: APPID,
-        user_id: 'web_visitor_' + Date.now(),
+        assistant_id: 'zYuRdHQnS8RA',
+        user_id: 'web_user_001',
         messages: messages,
         stream: false
       })
