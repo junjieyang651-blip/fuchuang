@@ -1338,7 +1338,7 @@
                 <li><a href="#page-design" class="nav-link" data-page="page-design">设计解码</a></li>
                 <li><a href="#page-route" class="nav-link" data-page="page-route">打卡路线</a></li>
                 <li><a href="#page-video" class="nav-link" data-page="page-video">视频专区</a></li>
-                <li><a href="#page-tools" class="nav-link" data-page="page-tools" style="color: var(--accent-gold);">实用工具</a></li>
+                <li><a href="#page-tools" class="nav-link" data-page="page-tools">实用工具</a></li>
                 <li><a href="#page-tech" class="nav-link" data-page="page-tech">技术创新</a></li>
                 <li><a href="#page-ai" class="nav-link" data-page="page-ai">AI 工具</a></li>
             </ul>
@@ -1805,12 +1805,12 @@
                             <option value="action">动态场景</option>
                         </select>
                     </div>
-                    <button class="btn btn-primary" onclick="generatePrompt()">生成 Prompt</button>
+                    <button class="btn btn-primary" onclick="generateToolPrompt()">生成 Prompt</button>
                 </div>
-                <div class="prompt-output" id="promptOutput" style="display:none;">
+                <div class="prompt-output" id="toolPromptOutput" style="display:none;">
                     <label>生成的 Prompt（可复制）：</label>
                     <textarea id="generatedPrompt" readonly></textarea>
-                    <button class="btn btn-secondary" onclick="copyPrompt()">复制 Prompt</button>
+                    <button class="btn btn-secondary" onclick="copyToolPrompt()">复制 Prompt</button>
                 </div>
             </div>
             
@@ -2764,7 +2764,7 @@
             }
         };
 
-        function generatePrompt() {
+        function generateToolPrompt() {
             const hero = document.getElementById('heroSelect').value;
             const landmark = document.getElementById('landmarkSelect').value;
             const scene = document.getElementById('sceneType').value;
@@ -2772,10 +2772,10 @@
             const prompt = promptTemplates[hero]?.[landmark]?.[scene] || '请选择有效的组合';
             
             document.getElementById('generatedPrompt').value = prompt;
-            document.getElementById('promptOutput').style.display = 'block';
+            document.getElementById('toolPromptOutput').style.display = 'block';
         }
 
-        function copyPrompt() {
+        function copyToolPrompt() {
             const textarea = document.getElementById('generatedPrompt');
             textarea.select();
             document.execCommand('copy');
