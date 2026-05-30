@@ -3614,12 +3614,62 @@ if __name__ == "__main__":
 
     // ---------- AI 对话功能 ----------
     const chatHistory = [];
-    const API_URL = 'https://fuchuang-api.junjieyang651.workers.dev'; // Cloudflare Worker 代理（国内可访问）
+    const APPKEY = 'IXr04nzbkZowxXZsy3YrflhUg9SNsuvk';
+    const APPID = '2060004427884063808';
+    // 多个 API 端点，按优先级尝试
+    const API_ENDPOINTS = [
+        'https://fuchuang-api.junjieyang651.workers.dev',
+        'https://fuchuang.vercel.app/api/chat'
+    ];
 
     function sendQuickQ(btn) {
         const text = btn.textContent;
         document.getElementById('chatInput').value = text;
         sendChat();
+    }
+
+    // 直接调用腾讯元器 API（无需代理）
+    async function callYuanqiDirect(msg) {
+        const messages = [];
+        chatHistory.slice(-10).forEach(item => {
+            messages.push({ role: item.role, content: [{ type: 'text', text: item.content }] });
+        });
+        messages.push({ role: 'user', content: [{ type: 'text', text: msg }] });
+
+        const res = await fetch('https://yuanqi.tencent.com/openapi/v1/agent/chat/completions', {
+            method: 'POST',
+            headers: {
+                'X-Source': 'openapi',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + APPKEY
+            },
+            body: JSON.stringify({
+                assistant_id: APPID,
+                user_id: 'web_user_001',
+                messages: messages,
+                stream: false
+            })
+        });
+        const data = await res.json();
+        let reply = '';
+        if (data.choices && data.choices.length > 0) {
+            const content = data.choices[0].message?.content;
+            if (typeof content === 'string') reply = content;
+            else if (Array.isArray(content)) reply = content.map(c => c.text || '').join('');
+        }
+        return reply;
+    }
+
+    // 通过代理调用
+    async function callViaProxy(url, msg) {
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: msg, history: chatHistory.slice(-10) })
+        });
+        const data = await res.json();
+        if (data.reply) return data.reply;
+        throw new Error(data.error || '无回复');
     }
 
     async function sendChat() {
@@ -3628,42 +3678,42 @@ if __name__ == "__main__":
         if (!msg) return;
 
         const messagesDiv = document.getElementById('chatMessages');
-        // 移除欢迎屏
         const welcome = messagesDiv.querySelector('.chat-welcome');
         if (welcome) welcome.remove();
 
-        // 显示用户消息
         appendMsg(msg, 'user');
         input.value = '';
         input.disabled = true;
         document.getElementById('chatSendBtn').disabled = true;
 
-        // 显示加载
         const loadingEl = appendMsg('正在思考...', 'bot loading');
 
         try {
-            const res = await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: msg, history: chatHistory.slice(-10) })
-            });
-            const data = await res.json();
+            let reply = '';
+            // 优先尝试直接调用腾讯元器 API
+            try {
+                reply = await callYuanqiDirect(msg);
+            } catch (e1) {
+                // 直接调用失败（可能 CORS），尝试代理
+                for (const endpoint of API_ENDPOINTS) {
+                    try {
+                        reply = await callViaProxy(endpoint, msg);
+                        break;
+                    } catch (e2) { continue; }
+                }
+            }
             loadingEl.remove();
 
-            if (data.reply) {
-                appendMsg(data.reply, 'bot');
+            if (reply) {
+                appendMsg(reply, 'bot');
                 chatHistory.push({ role: 'user', content: msg });
-                chatHistory.push({ role: 'assistant', content: data.reply });
-            } else if (data.error) {
-                appendMsg('❌ ' + data.error + '\n' + (data.detail || '') + (data.sentBody ? '\n发送:' + data.sentBody.substring(0, 100) : ''), 'bot');
-            } else if (data.debug) {
-                appendMsg('❌ 无回复。原始数据: ' + data.debug.substring(0, 200), 'bot');
+                chatHistory.push({ role: 'assistant', content: reply });
             } else {
-                appendMsg('❌ 未知错误: ' + JSON.stringify(data).substring(0, 200), 'bot');
+                appendMsg('❌ AI 暂时无法响应，请稍后再试', 'bot');
             }
         } catch (err) {
             loadingEl.remove();
-            appendMsg('网络错误: ' + err.message, 'bot');
+            appendMsg('❌ 网络错误，请检查网络连接后重试', 'bot');
         }
 
         input.disabled = false;
