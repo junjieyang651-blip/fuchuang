@@ -1742,17 +1742,6 @@
                     <source src="./主题视频.webm" type="video/webm">
                     您的浏览器不支持视频播放
                 </video>
-                <!-- 视频控制条 -->
-                <div class="video-controls" id="videoControls">
-                    <button class="video-btn" id="playPauseBtn" title="播放/暂停">▶</button>
-                    <div class="video-progress" id="videoProgress">
-                        <div class="video-progress-bar" id="progressBar"></div>
-                    </div>
-                    <span class="video-time" id="videoTime">00:00 / 00:00</span>
-                    <button class="video-btn" id="muteBtn" title="静音">🔊</button>
-                    <input type="range" class="video-volume" id="volumeSlider" min="0" max="100" value="100">
-                    <button class="video-btn" id="fullscreenBtn" title="全屏">⛶</button>
-                </div>
             </div>
             <div class="video-info">
                 <h3>诗韵长安 · 盛唐印象</h3>
@@ -2518,15 +2507,6 @@
 
         // video controls
         const video = document.getElementById('mainVideo');
-        const playPauseBtn = document.getElementById('playPauseBtn');
-        const videoProgress = document.getElementById('videoProgress');
-        const progressBar = document.getElementById('progressBar');
-        const videoTime = document.getElementById('videoTime');
-        const muteBtn = document.getElementById('muteBtn');
-        const volumeSlider = document.getElementById('volumeSlider');
-        const fullscreenBtn = document.getElementById('fullscreenBtn');
-
-        // 检查视频是否可用
         let videoAvailable = false;
         video.addEventListener('loadeddata', () => { videoAvailable = true; });
         video.addEventListener('error', () => { 
@@ -2534,80 +2514,7 @@
             console.log('视频文件未找到，请添加主题视频.mp4');
         });
 
-        // 格式化时间
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
 
-        // 播放/暂停
-        playPauseBtn.addEventListener('click', () => {
-            if (!videoAvailable) {
-                alert('请先添加视频文件：主题视频.mp4');
-                return;
-            }
-            if (video.paused) {
-                video.play();
-                playPauseBtn.textContent = '⏸';
-            } else {
-                video.pause();
-                playPauseBtn.textContent = '▶';
-            }
-        });
-
-        // 点击视频播放/暂停
-        video.addEventListener('click', () => {
-            if (videoAvailable) {
-                playPauseBtn.click();
-            }
-        });
-
-        // 更新进度条
-        video.addEventListener('timeupdate', () => {
-            if (!videoAvailable) return;
-            const percent = (video.currentTime / video.duration) * 100;
-            progressBar.style.width = percent + '%';
-            videoTime.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration || 0)}`;
-        });
-
-        // 点击进度条跳转
-        videoProgress.addEventListener('click', (e) => {
-            if (!videoAvailable || !video.duration) return;
-            const rect = videoProgress.getBoundingClientRect();
-            const percent = (e.clientX - rect.left) / rect.width;
-            video.currentTime = percent * video.duration;
-        });
-
-        // 静音切换
-        muteBtn.addEventListener('click', () => {
-            video.muted = !video.muted;
-            muteBtn.textContent = video.muted ? '🔇' : '🔊';
-            volumeSlider.value = video.muted ? 0 : video.volume * 100;
-        });
-
-        // 音量滑块
-        volumeSlider.addEventListener('input', (e) => {
-            video.volume = e.target.value / 100;
-            video.muted = e.target.value == 0;
-            muteBtn.textContent = e.target.value == 0 ? '🔇' : '🔊';
-        });
-
-        // 全屏
-        fullscreenBtn.addEventListener('click', () => {
-            const container = document.querySelector('.video-container');
-            if (document.fullscreenElement) {
-                document.exitFullscreen();
-            } else {
-                container.requestFullscreen();
-            }
-        });
-
-        // 视频加载完成
-        video.addEventListener('loadedmetadata', () => {
-            videoAvailable = true;
-            videoTime.textContent = `00:00 / ${formatTime(video.duration)}`;
-        });
 
         // copy color
         document.querySelectorAll('.color-card').forEach(card => {
